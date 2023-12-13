@@ -1,7 +1,33 @@
-import Image from 'next/image'
+"use client";
+import React, { useEffect, useState } from "react";
+import { useSession, signIn, signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
-export default function Home() {
+type Props = {};
+
+function Page({}: Props) {
+  const { data: session } = useSession();
+  const user = session?.user;
+  const email = user?.email;
+  console.log("user", user);
+  console.log("session client", session);
+
+  useEffect(() => {
+    if (!session!!) {
+      signIn();
+    }
+  }, [session!!]);
+
+  if (!session) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    <div className=' text-red-400'>test na ja</div>
-  )
+    <div>
+      <h1>Secure Page</h1>
+      <p>Welcome! {email}</p>
+    </div>
+  );
 }
+
+export default Page;

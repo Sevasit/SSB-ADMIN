@@ -1,16 +1,19 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 type Props = {};
 
-function page({}: Props) {
-  const router = useRouter();
+function Page({}: Props) {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const submit = () => {
-    console.log(email, password);
-    router.push("/");
+    signIn("credentials", {
+      email: email,
+      password: password,
+      callbackUrl: "/dashboard",
+    });
   };
 
   return (
@@ -54,4 +57,4 @@ function page({}: Props) {
   );
 }
 
-export default page;
+export default Page;
