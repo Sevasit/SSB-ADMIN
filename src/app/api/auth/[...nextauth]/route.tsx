@@ -2,8 +2,10 @@ import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 import AxiosCustom from "../../../../../utils/AxiosApi";
+import { IUserResponse } from "../../../../../types/IUserResponse";
 
 const handler = NextAuth({
+  secret: process.env.NEXTAUTH_SECRET,
   pages: {
     signIn: "/login",
     signOut: "/login",
@@ -16,7 +18,6 @@ const handler = NextAuth({
         password: { label: "password", type: "password" },
       },
       async authorize(credentials: any) {
-        console.log(credentials);
         const res = await AxiosCustom.post(
           "/auth/login",
           {
@@ -29,16 +30,33 @@ const handler = NextAuth({
             },
           }
         );
-        console.log("ressssssssssssssss", res);
-        if (res) {
-          return {
+        if (res.data.data) {
+          const user = {
             ...res.data.data,
-            accessToken: res.data.token,
+            token: res.data.token,
           };
+          return user;
+        } else {
+          return null;
         }
-        return null;
       },
     }),
   ],
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.accessToken = user.token;
+      }
+      return token;
+    },
+    session: async ({ session, token }) => {
+      const res = await AxiosCustom.get<IUserResponse>(
+        `/auth/findUserData?email=${session.user?.email}`
+      );
+      session.userData = res.data;
+      session.jwt = token.accessToken;
+      return session;
+    },
+  },
 });
 export { handler as GET, handler as POST };

@@ -12,7 +12,6 @@ function Page({}: Props) {
     signIn("credentials", {
       email: email,
       password: password,
-      redirect: true,
       callbackUrl: "/dashboard",
     });
   };

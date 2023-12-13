@@ -7,13 +7,16 @@ type Props = {};
 
 function Page({}: Props) {
   const { data: session } = useSession();
-  const router = useRouter();
+  const user = session?.user;
+  const email = user?.email;
+  console.log("user", user);
+  console.log("session client", session);
 
   useEffect(() => {
-    if (!session) {
+    if (!session!!) {
       signIn();
     }
-  }, [session, router]);
+  }, [session!!]);
 
   if (!session) {
     return <div>Loading...</div>;
@@ -22,7 +25,7 @@ function Page({}: Props) {
   return (
     <div>
       <h1>Secure Page</h1>
-      <p>Welcome!</p>
+      <p>Welcome! {email}</p>
     </div>
   );
 }
