@@ -3,9 +3,11 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "../../utils/QueryProvider";
 import Slider from "./components/Slider";
+import SliderEmp from "./components/SliderEmp";
 import Header from "./components/Header";
 import { NextAuthProvider } from "./providers";
 import { getServerSession } from "next-auth";
+import { authOptions } from "../../utils/authOptions";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,7 +21,8 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
+  console.log("session layout", session?.userData.role);
   return (
     <NextAuthProvider>
       <html lang="en">
@@ -28,7 +31,11 @@ export default async function RootLayout({
             {session ? (
               <>
                 <Header />
-                <Slider>{children}</Slider>
+                {session?.userData.role === "admin" ? (
+                  <Slider>{children}</Slider>
+                ) : (
+                  <SliderEmp>{children}</SliderEmp>
+                )}
               </>
             ) : (
               children
