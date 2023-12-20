@@ -6,22 +6,18 @@ import { useRouter } from "next/navigation";
 type Props = {};
 
 function Page({}: Props) {
-  const route = useRouter();
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const user = session?.user;
   const email = user?.email;
   console.log("user", user);
   console.log("session client", session);
 
-  useEffect(() => {
-    if (!session) {
-      signIn();
-    }
-  }, [session!!]);
-
-  // If the session is not yet available, show a loading message
-  if (!session) {
+  if (status === "loading") {
     return <div>Loading...</div>;
+  }
+
+  if (status === "unauthenticated") {
+    signIn();
   }
 
   return (

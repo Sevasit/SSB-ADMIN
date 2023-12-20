@@ -29,7 +29,7 @@ function Page({}: Props) {
             <span className="mb-2 text-md">Email</span>
             <input
               type="text"
-              className="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
+              className=" focus:text-[#00DC82] w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
               name="email"
               id="email"
               onChange={(e) => setEmail(e.target.value)}
@@ -42,7 +42,7 @@ function Page({}: Props) {
               name="pass"
               id="pass"
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
+              className=" focus:text-[#00DC82] w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
             />
           </div>
           <button
