@@ -1,25 +1,19 @@
 "use client";
-import { signOut } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import React from "react";
+import TopCard from "../components/TopChart";
+import BarChart from "../components/BarChart";
+import RecentTask from "../components/RecentTask";
 
 type Props = {};
 
 const Dashboard = (props: Props) => {
-  const router = useRouter();
-
-  const handleSignOut = async () => {
-    const data = await signOut({ redirect: false, callbackUrl: "/" });
-
-    if (data?.url) {
-      router.push(data.url);
-    }
-  };
   return (
     <div>
-      <button onClick={() => handleSignOut()} className="bg-red-500">
-        Logout
-      </button>
+      <TopCard />
+      <div className="p-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+        <BarChart />
+        <RecentTask />
+      </div>
     </div>
   );
 };

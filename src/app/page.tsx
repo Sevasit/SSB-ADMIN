@@ -21,7 +21,7 @@ function Page({}: Props) {
   }
 
   return (
-    <div>
+    <div className="">
       <h1>Secure Page</h1>
       <p>Welcome! {email}</p>
     </div>
