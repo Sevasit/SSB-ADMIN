@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteUser, getUsers } from "../QueriesKey";
-import { deleteUsers } from "@/app/api/users/userApi";
+import { deleteUsers } from "@/app/api/user/userApi";
 import { IResponseDefault } from "../../types/IResponseDefult";
 
 export default function useCreateUsers() {

@@ -12,6 +12,7 @@ import Link from "next/link";
 import React from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import useGetType from "../../../../hooks/type/useGetType";
 
 interface Props {}
 
@@ -23,6 +24,12 @@ const CreateEmp = (props: Props) => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  const {
+    data: dataType = [],
+    isLoading: createisLoading,
+    isError: isErrorisLoading,
+  } = useGetType();
 
   const onSubmit = (data: any) => {
     console.log(data);
@@ -99,6 +106,45 @@ const CreateEmp = (props: Props) => {
                   </FormControl>
                 </div>
               </div>
+              <div className="flex items-center gap-20">
+                <div className="flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-[44px]">
+                  <FormControl size="small" sx={{ minWidth: 300 }}>
+                    <TextField
+                      id="password"
+                      variant="outlined"
+                      size="small"
+                      label="รหัสผ่าน"
+                      type="password"
+                      {...register("password", { required: true })}
+                    />
+                  </FormControl>
+                </div>
+                <div className="flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-[44px]">
+                  <FormControl size="small" sx={{ minWidth: 300 }}>
+                    <TextField
+                      id="newPassword"
+                      variant="outlined"
+                      size="small"
+                      type="password"
+                      label="ยืนยันรหัสผ่าน"
+                      {...register("newPassword", { required: true })}
+                      //   value={phone}
+                      //   InputLabelProps={{
+                      //     shrink: true,
+                      //   }}
+                      //   onChange={handleValidationMobilePhone}
+                      //   error={dirty?.mobilePhone && !isValid?.mobilePhone}
+                      //   onBlur={() => setDirty({ ...dirty, mobilePhone: true })}
+                      //   helperText={
+                      //     dirty?.mobilePhone &&
+                      //     !isValid?.mobilePhone &&
+                      //     "Please enter a valid mobile phone number."
+                      //   }
+                      inputProps={{ maxLength: 12 }}
+                    />
+                  </FormControl>
+                </div>
+              </div>
               <div className="flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-20">
                 <FormControl size="small" sx={{ minWidth: 200 }}>
                   <InputLabel id="demo-simple-select-label">
@@ -107,18 +153,14 @@ const CreateEmp = (props: Props) => {
                   <Select
                     label="ประเภทงาน"
                     id="type"
-                    // value={type}
-                    // onChange={(e) => {
-                    //   handleCountLeaveDay(String(e.target.value));
-                    // }}
+                    {...register("type", { required: true })}
+                    defaultValue={""}
                   >
-                    {/* {data.map((item, index) => (
-                  <MenuItem
-                    key={Number(item.id)}
-                    value={Number(item.id)}>
-                    {item.typeName}
-                  </MenuItem>
-                ))} */}
+                    {dataType.map((item, index) => (
+                      <MenuItem key={item._id} value={item.typeName}>
+                        {item.typeName}
+                      </MenuItem>
+                    ))}
                   </Select>
                 </FormControl>
               </div>
