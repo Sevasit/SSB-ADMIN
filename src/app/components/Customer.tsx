@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import { FiUser } from "react-icons/fi";
-import { data } from "../data/data.js";
 import { MdOutlineAddBox } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { BiEdit } from "react-icons/bi";
@@ -9,9 +8,13 @@ import { Dialog, DialogActions } from "@mui/material";
 import { useRouter } from "next/navigation";
 import useGetfindUsers from "../../../hooks/users/useGetfindUsers";
 import dayjs from "dayjs";
-import useCreateUsers from "../../../hooks/users/useCreateUsers";
 import toast, { Toaster } from "react-hot-toast";
+import useDeleteUsers from "../../../hooks/users/useDeleteUsers";
+import "dayjs/locale/th";
+import buddhistEra from "dayjs/plugin/buddhistEra";
 
+dayjs.extend(buddhistEra);
+dayjs.locale("th");
 interface Props {}
 
 const Empolyee = (props: Props) => {
@@ -20,7 +23,7 @@ const Empolyee = (props: Props) => {
     mutateAsync: mutateAsynccreate,
     isLoading: createisLoading,
     isError: isErrorisLoading,
-  } = useCreateUsers();
+  } = useDeleteUsers();
   const router = useRouter();
   const [open, setOpen] = React.useState(false);
   const [id, setId] = React.useState("");
@@ -73,17 +76,17 @@ const Empolyee = (props: Props) => {
                     <div className="bg-[#00DC82] rounded-lg p-2 text-white">
                       <FiUser />
                     </div>
-                    <p className="pl-4">
+                    <p className="pl-4 text-sm">
                       {item.firstName + " " + item.lastName}
                     </p>
                   </div>
-                  <p className="sm:text-left text-right text-gray-600">
+                  <p className="sm:text-left text-right text-sm">
                     {item.email}
                   </p>
-                  <p className="hidden md:flex">
-                    {dayjs(item.updatedAt).format("YYYY/MM/DD")}
+                  <p className="hidden md:flex text-sm">
+                    {dayjs(item.updatedAt).format("DD MMMM BBBB")}
                   </p>
-                  <div className="sm:flex hidden justify-between items-center">
+                  <div className="sm:flex text-sm hidden justify-between items-center">
                     <p>{item.role}</p>
                   </div>
                   <div>

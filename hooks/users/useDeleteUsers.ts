@@ -1,14 +1,13 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-
+import { deleteUser, getUsers } from "../QueriesKey";
+import { deleteUsers } from "@/app/api/user/userApi";
 import { IResponseDefault } from "../../types/IResponseDefult";
-import { createUser, getUsers } from "../QueriesKey";
-import { createUsers } from "@/app/api/user/userApi";
 
-export default function useCreateUsers() {
+export default function useDeleteUsers() {
   const queryClient = useQueryClient();
   return useMutation<IResponseDefault, { message: string }, any>(
-    [createUser],
-    (payload) => createUsers(payload),
+    [deleteUser],
+    (payload) => deleteUsers(payload),
     {
       onSuccess: () => queryClient.invalidateQueries([getUsers]),
     }
