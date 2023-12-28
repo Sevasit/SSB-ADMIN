@@ -1,7 +1,6 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { useSession, signIn, signOut } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import React from "react";
+import { useSession, signIn } from "next-auth/react";
 
 type Props = {};
 

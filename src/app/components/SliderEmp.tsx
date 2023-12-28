@@ -15,7 +15,7 @@ const Slider = ({ children }: { children: React.ReactNode }) => {
             className=" w-16 text-white gap-2  bg-[#00DC82] duration-200 ease-linear hover:bg-gray-300 hover:text-black p-2 rounded-lg flex flex-col justify-center items-center"
           >
             <RxDashboard size={28} />
-            <span className=" text-[11px] uppercase font-semibold">
+            <span className=" text-[9px] uppercase font-semibold">
               Dashboard
             </span>
           </Link>
@@ -24,7 +24,7 @@ const Slider = ({ children }: { children: React.ReactNode }) => {
             className="w-16 bg-gray-200 duration-200 ease-linear hover:bg-gray-300 p-2 rounded-lg flex flex-col justify-between items-center gap-2"
           >
             <IoPaperPlaneOutline size={28} />
-            <span className=" text-[11px] uppercase font-semibold">
+            <span className=" text-[9px] uppercase font-semibold">
               Approved
             </span>
           </Link>
@@ -33,7 +33,7 @@ const Slider = ({ children }: { children: React.ReactNode }) => {
             className="w-16 bg-gray-200 duration-200 ease-linear hover:bg-gray-300 p-2 rounded-lg flex flex-col justify-between items-center gap-2"
           >
             <IoMdCheckmarkCircleOutline size={28} />
-            <span className=" text-[11px] uppercase font-semibold">
+            <span className=" text-[9px] uppercase font-semibold">
               Completed
             </span>
           </Link>

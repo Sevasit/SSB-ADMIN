@@ -62,6 +62,7 @@ const TopCard = () => {
           </div>
           <p className=" ">ปัญหาห้องน้ำ</p>
         </div>
+
         {/* <p className="bg-[#00DC82] flex justify-center items-center p-[10px] rounded-lg">
           <span className=" text-black text-lg">+25%</span>
         </p> */}
