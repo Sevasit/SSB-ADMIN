@@ -18,7 +18,7 @@ dayjs.locale("th");
 interface Props {}
 
 const Empolyee = (props: Props) => {
-  const { data: dataLeave = [], isLoading, isError } = useGetfindUsers();
+  const { data: dataUers = [], isLoading, isError } = useGetfindUsers();
   const {
     mutateAsync: mutateAsynccreate,
     isLoading: createisLoading,
@@ -67,45 +67,51 @@ const Empolyee = (props: Props) => {
               <span className="hidden sm:grid">ประเภท</span>
             </div>
             <ul>
-              {dataLeave.map((item, id) => (
-                <li
-                  key={item._id}
-                  className="bg-gray-50 hover:bg-gray-100 rounded-lg my-3 p-2 grid md:grid-cols-6 sm:grid-cols-3 grid-cols-2 items-center justify-between"
-                >
-                  <div className="flex items-center">
-                    <div className="bg-[#00DC82] rounded-lg p-2 text-white">
-                      <FiUser />
+              {!isLoading &&
+                !isError &&
+                dataUers &&
+                dataUers.map((item, id) => (
+                  <li
+                    key={item._id}
+                    className="bg-gray-50 hover:bg-gray-100 rounded-lg my-3 p-2 grid md:grid-cols-6 sm:grid-cols-3 grid-cols-2 items-center justify-between"
+                  >
+                    <div className="flex items-center">
+                      <div className="bg-[#00DC82] rounded-lg p-2 text-white">
+                        <FiUser />
+                      </div>
+                      <p className="pl-4 text-sm">
+                        {item.firstName + " " + item.lastName}
+                      </p>
                     </div>
-                    <p className="pl-4 text-sm">
-                      {item.firstName + " " + item.lastName}
+                    <p className="sm:text-left text-right text-sm">
+                      {item.email}
                     </p>
-                  </div>
-                  <p className="sm:text-left text-right text-sm">
-                    {item.email}
-                  </p>
-                  <p className="hidden md:flex text-sm">
-                    {dayjs(item.updatedAt).format("DD MMMM BBBB")}
-                  </p>
-                  <div className="sm:flex text-sm hidden justify-between items-center">
-                    <p>{item.role}</p>
-                  </div>
-                  <div>
-                    <div className=" w-24 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#dc8000] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer py-1 rounded-lg flex gap-1 justify-between px-4 items-center">
-                      <span>เเก้ไข</span>
-                      <BiEdit className=" text-lg" />
+                    <p className="hidden md:flex text-sm">
+                      {dayjs(item.updatedAt).format("DD MMMM BBBB")}
+                    </p>
+                    <div className="sm:flex text-sm hidden justify-between items-center">
+                      <p>{item.role}</p>
                     </div>
-                  </div>
-                  <div>
-                    <div
-                      onClick={() => handleClickOpen(item._id)}
-                      className=" w-24 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer py-1 rounded-lg flex gap-1 justify-between px-4 items-center"
-                    >
-                      <span>ลบ</span>
-                      <RiDeleteBin6Line className=" text-lg" />
+                    <div>
+                      <div
+                        onClick={() => router.push(`/employee/${item._id}`)}
+                        className=" w-24 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#dc8000] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer py-1 rounded-lg flex gap-1 justify-between px-4 items-center"
+                      >
+                        <span>เเก้ไข</span>
+                        <BiEdit className=" text-lg" />
+                      </div>
                     </div>
-                  </div>
-                </li>
-              ))}
+                    <div>
+                      <div
+                        onClick={() => handleClickOpen(item._id)}
+                        className=" w-24 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer py-1 rounded-lg flex gap-1 justify-between px-4 items-center"
+                      >
+                        <span>ลบ</span>
+                        <RiDeleteBin6Line className=" text-lg" />
+                      </div>
+                    </div>
+                  </li>
+                ))}
             </ul>
           </div>
         </div>

@@ -15,3 +15,12 @@ export interface IUsers {
   role: string;
   updatedAt: Dayjs;
 }
+
+export interface IUsersById {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  role: string;
+  phone: string;
+}
