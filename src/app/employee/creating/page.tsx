@@ -15,6 +15,7 @@ import { useForm } from "react-hook-form";
 import useGetType from "../../../../hooks/type/useGetType";
 import useCreateUsers from "../../../../hooks/users/useCreateUsers";
 import toast, { Toaster } from "react-hot-toast";
+import { signIn, useSession } from "next-auth/react";
 
 interface Props {}
 
@@ -29,6 +30,15 @@ type FormData = {
 };
 
 const CreateEmp = (props: Props) => {
+  const { data: session, status } = useSession();
+  const user = session?.user;
+  const email = user?.email;
+  console.log("user", user);
+  console.log("session client", session);
+
+  if (status === "unauthenticated") {
+    signIn();
+  }
   const router = useRouter();
 
   const {
@@ -67,7 +77,7 @@ const CreateEmp = (props: Props) => {
       .then((data) => {
         console.log(data);
         if (data.message === "Created user successfully") {
-          toast.success("เพิ่มข้อมูลผู้ใช้งานเรียบร้อย");
+          toast.success("เพิ่มข้อมูลผู้ใช้งานสำเร็จ");
           router.push("/employee");
         } else if (data.message === "Role already exists") {
           toast.error("มีประเภทงานนี้ถูกใช้เเล้ว", {

@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { IoPaperPlaneOutline } from "react-icons/io5";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
-
+import { BsBoxes } from "react-icons/bs";
 import { RxDashboard, RxPerson } from "react-icons/rx";
 
 const Slider = ({ children }: { children: React.ReactNode }) => {
@@ -36,6 +36,13 @@ const Slider = ({ children }: { children: React.ReactNode }) => {
             <span className=" text-[9px] uppercase font-semibold">
               Completed
             </span>
+          </Link>
+          <Link
+            href="/type"
+            className="w-16 bg-gray-200 duration-200 ease-linear hover:bg-gray-300 p-2 rounded-lg flex flex-col justify-between items-center gap-2"
+          >
+            <BsBoxes size={28} />
+            <span className=" text-[9px] uppercase font-semibold">Types</span>
           </Link>
           <Link
             href="/employee"

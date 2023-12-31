@@ -7,6 +7,17 @@ const editUser = "EDIT_USERS";
 
 //TYPE KEY
 const getTypes = "GET_TYPES";
+const deleteType = "DELETE_TYPES";
+const createType = "CREATE_TYPES";
 
 //add export key
-export { getUsers, deleteUser, getTypes, createUser, getUsersById, editUser };
+export {
+  getUsers,
+  deleteUser,
+  getTypes,
+  createUser,
+  getUsersById,
+  editUser,
+  deleteType,
+  createType,
+};
