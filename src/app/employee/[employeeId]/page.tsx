@@ -6,39 +6,58 @@ import {
   MenuItem,
   Select,
   TextField,
-  TextareaAutosize,
 } from "@mui/material";
 import Link from "next/link";
 import React from "react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import useGetType from "../../../../hooks/type/useGetType";
 import useCreateUsers from "../../../../hooks/users/useCreateUsers";
 import toast, { Toaster } from "react-hot-toast";
-
-interface Props {}
+import useGetByIdUsers from "../../../../hooks/users/useGetByIdUsers";
+import useEditUsers from "../../../../hooks/users/useEditUsers";
 
 type FormData = {
   name: string;
   lastname: string;
   email: string;
   phone: string;
+  oldPassword: string;
   password: string;
   newPassword: string;
   role: string;
 };
 
-const CreateEmp = (props: Props) => {
+const EditEmp = () => {
   const router = useRouter();
+  const { employeeId } = useParams();
+
+  const {
+    data: dataGetId,
+    isLoading: GetIdisLoading,
+    isError: GetIdisError,
+  } = useGetByIdUsers(employeeId.toString()!!);
 
   const {
     register,
     handleSubmit,
     watch,
+    reset,
     formState: { errors },
   } = useForm<FormData>();
 
   const watchFieldsPassword = watch(["password", "newPassword"]);
+
+  React.useEffect(() => {
+    if (!GetIdisLoading && !GetIdisError && dataGetId) {
+      reset({
+        name: dataGetId.firstName,
+        lastname: dataGetId.lastName,
+        email: dataGetId.email,
+        phone: dataGetId.phone,
+      });
+    }
+  }, [dataGetId, GetIdisLoading, GetIdisError, reset]);
 
   const {
     data: dataType = [],
@@ -47,30 +66,32 @@ const CreateEmp = (props: Props) => {
   } = useGetType();
 
   const {
-    mutateAsync: mutateAsynccreate,
-    isLoading: createisLoading,
-    isError: createisError,
-  } = useCreateUsers();
+    mutateAsync: mutateAsyncEdit,
+    isLoading: editisLoading,
+    isError: editisError,
+  } = useEditUsers();
 
   const onSubmit = (data: FormData) => {
     const payload = {
+      id: employeeId,
       firstName: data.name,
       lastName: data.lastname,
       email: data.email,
       phone: data.phone,
-      password: data.password,
+      oldPassword: data.oldPassword,
+      newPassword: data.newPassword,
       role: data.role,
     };
     console.log(data);
-    const res = mutateAsynccreate(payload);
+    const res = mutateAsyncEdit(payload);
     res
       .then((data) => {
         console.log(data);
-        if (data.message === "Created user successfully") {
-          toast.success("เพิ่มข้อมูลผู้ใช้งานเรียบร้อย");
+        if (data.message === "Updated user successfully") {
+          toast.success("อัพเดตข้อมูลผู้ใช้งานเรียบร้อย");
           router.push("/employee");
-        } else if (data.message === "Role already exists") {
-          toast.error("มีประเภทงานนี้ถูกใช้เเล้ว", {
+        } else if (data.message === "Invalid password") {
+          toast.error("รหัสผ่านเก่าผิดกรุณาลองใหม่", {
             style: {
               border: "1px solid #713200",
               padding: "16px",
@@ -82,7 +103,7 @@ const CreateEmp = (props: Props) => {
             },
           });
         } else {
-          toast.error("อีเมล์นี้ถูกใช้เเล้ว", {
+          toast.error("มีประเภทงานนี้ถูกใช้เเล้ว", {
             style: {
               border: "1px solid #713200",
               padding: "16px",
@@ -96,7 +117,7 @@ const CreateEmp = (props: Props) => {
         }
       })
       .catch((error) => {
-        toast.error("เพิ่มข้อมูลผู้ใช้งานไม่สำเร็จ");
+        toast.error("อัพเดตข้อมูลผู้ใช้งานไม่สำเร็จ");
       });
   };
 
@@ -108,7 +129,7 @@ const CreateEmp = (props: Props) => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="px-[5%] mt-5 flex flex-col gap-4 p-5 rounded-lg border-4 border-[#00DC82]">
               <div className="text-lg text-start w-full font-semibold">
-                สร้างบัญชีผู้ใช้
+                เเก้ไขบัญชีผู้ใช้
               </div>
               <div className="flex items-center gap-20">
                 <div className="flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-[44px]">
@@ -122,6 +143,9 @@ const CreateEmp = (props: Props) => {
                       size="small"
                       label="ชื่อ"
                       color="success"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
                       {...register("name", { required: true })}
                     />
                     <p className="text-[12px] ml-1 text-[#b91515]">
@@ -142,6 +166,9 @@ const CreateEmp = (props: Props) => {
                       size="small"
                       label="นามสกุล"
                       color="success"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
                       {...register("lastname", { required: true })}
                     />
                     <p className="text-[12px] ml-1 text-[#b91515]">
@@ -164,6 +191,9 @@ const CreateEmp = (props: Props) => {
                       size="small"
                       label="อีเมล์"
                       color="success"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
                       {...register("email", {
                         required: true,
                         pattern: {
@@ -193,6 +223,9 @@ const CreateEmp = (props: Props) => {
                       size="small"
                       label="เบอร์โทรศัพท์"
                       color="success"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
                       {...register("phone", {
                         required: true,
                         pattern: {
@@ -233,7 +266,7 @@ const CreateEmp = (props: Props) => {
                       id="password"
                       variant="outlined"
                       size="small"
-                      label="รหัสผ่าน"
+                      label="รหัสผ่านใหม่"
                       type="password"
                       color="success"
                       {...register("password", {
@@ -265,7 +298,7 @@ const CreateEmp = (props: Props) => {
                       variant="outlined"
                       size="small"
                       type="password"
-                      label="ยืนยันรหัสผ่าน"
+                      label="ยืนยันรหัสผ่านใหม่"
                       color="success"
                       {...register("newPassword", {
                         required: true,
@@ -295,6 +328,34 @@ const CreateEmp = (props: Props) => {
                     </p>
                   </FormControl>
                 </div>
+              </div>
+              <div className="flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-20">
+                <FormControl size="small" sx={{ minWidth: 300, minHeight: 60 }}>
+                  <TextField
+                    id="oldPassword"
+                    variant="outlined"
+                    size="small"
+                    label="รหัสผ่านเก่า"
+                    type="password"
+                    color="success"
+                    {...register("oldPassword", {
+                      required: true,
+                      minLength: {
+                        value: 12,
+                        message: "กรุณากรอกรหัสผ่านผู้ใช้ให้ถูกต้อง",
+                      },
+                    })}
+                    inputProps={{ maxLength: 12 }}
+                  />
+                  <p className="text-[12px] ml-1 text-[#b91515]">
+                    {errors.oldPassword &&
+                      errors.oldPassword.type === "required" &&
+                      "กรุณากรอกรหัสผ่านเก่าของผู้ใช้"}
+                    {errors.oldPassword &&
+                      errors.oldPassword.type === "minLength" &&
+                      errors.oldPassword.message}
+                  </p>
+                </FormControl>
               </div>
               <div className="flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-20">
                 <FormControl size="small" sx={{ minWidth: 200, minHeight: 60 }}>
@@ -344,4 +405,4 @@ const CreateEmp = (props: Props) => {
   );
 };
 
-export default CreateEmp;
+export default EditEmp;

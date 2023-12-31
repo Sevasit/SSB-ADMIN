@@ -2,16 +2,17 @@
 import Link from "next/link";
 import React from "react";
 import Image from "next/image";
+import InternalError from "../../public/internalError.png";
 
 const ErrorPage = () => {
   return (
     <div>
       <div className=" text-center pt-[5%] flex flex-col gap-5 items-center">
         <Image
-          width={400}
-          height={400}
+          width={350}
+          height={350}
           priority={true}
-          src={notfoundlogo}
+          src={InternalError}
           alt="notfoundlogo"
         />
         <h2 className=" text-2xl text-[#00DC82] uppercase font-bold">
