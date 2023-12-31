@@ -12,18 +12,20 @@ import toast, { Toaster } from "react-hot-toast";
 import useDeleteUsers from "../../../hooks/users/useDeleteUsers";
 import "dayjs/locale/th";
 import buddhistEra from "dayjs/plugin/buddhistEra";
+import Link from "next/link";
 
 dayjs.extend(buddhistEra);
 dayjs.locale("th");
 interface Props {}
 
 const Empolyee = (props: Props) => {
-  const { data: dataUers = [], isLoading, isError } = useGetfindUsers();
+  const { data: dataUsers = [], isLoading, isError } = useGetfindUsers();
   const {
     mutateAsync: mutateAsynccreate,
     isLoading: createisLoading,
     isError: isErrorisLoading,
   } = useDeleteUsers();
+
   const router = useRouter();
   const [open, setOpen] = React.useState(false);
   const [id, setId] = React.useState("");
@@ -40,7 +42,7 @@ const Empolyee = (props: Props) => {
   const handleSubmit = async () => {
     try {
       await mutateAsynccreate(id);
-      toast.success("ลบข้อมูลผู้ใช้งานเรียบร้อย");
+      toast.success("ลบข้อมูลผู้ใช้งานสำเร็จ");
       setOpen(false);
     } catch (error) {
       toast.error("ลบข้อมูลผู้ใช้งานไม่สำเร็จ");
@@ -52,13 +54,12 @@ const Empolyee = (props: Props) => {
         <div className="p-4">
           <div className="w-full m-auto p-4 border rounded-lg bg-white overflow-y-auto">
             <div className="flex justify-end">
-              <div
-                onClick={() => router.push("/employee/creating")}
-                className=" w-24 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#00DC82] hover:border-black hover:text-white duration-300 shadow-md py-1 rounded-lg flex gap-1 justify-between px-4 items-center cursor-pointer"
-              >
-                <span>เพิ่ม</span>
-                <MdOutlineAddBox className=" text-xl" />
-              </div>
+              <Link href="/employee/creating">
+                <div className=" w-24 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#00DC82] hover:border-black hover:text-white duration-300 shadow-md py-1 rounded-lg flex gap-1 justify-between px-4 items-center cursor-pointer">
+                  <span>เพิ่ม</span>
+                  <MdOutlineAddBox className=" text-xl" />
+                </div>
+              </Link>
             </div>
             <div className="my-3 p-2 grid grid-cols-2 md:grid-cols-6 items-center justify-between">
               <span>ชื่อ</span>
@@ -69,8 +70,8 @@ const Empolyee = (props: Props) => {
             <ul>
               {!isLoading &&
                 !isError &&
-                dataUers &&
-                dataUers.map((item, id) => (
+                dataUsers &&
+                dataUsers.map((item, id) => (
                   <li
                     key={item._id}
                     className="bg-gray-50 hover:bg-gray-100 rounded-lg my-3 p-2 grid md:grid-cols-6 sm:grid-cols-3 grid-cols-2 items-center justify-between"
@@ -119,7 +120,7 @@ const Empolyee = (props: Props) => {
       <Dialog open={open} onClose={handleClose}>
         <div className="p-6">
           <div className=" m-3 text-xl">
-            {"คุณต้องการที่จะลบข้อมูล employee หรือไม่?"}
+            {"คุณต้องการที่จะลบข้อมูลผู้ใช้หรือไม่?"}
           </div>
           <DialogActions>
             <div

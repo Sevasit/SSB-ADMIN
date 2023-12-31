@@ -3,7 +3,7 @@ import { IUserCreate, IUserEdit } from "../../../../types/IUser";
 import { IUsers, IUsersById } from "../../../../types/IUserResponse";
 import AxiosCustom from "../../../../utils/AxiosApi";
 
-export const getfindUsers = async () => {
+export const getfindUsersApi = async () => {
   try {
     const response = await AxiosCustom.get<IUsers[]>("/auth/findUsers");
     if (response?.data === undefined) {
@@ -16,7 +16,7 @@ export const getfindUsers = async () => {
   }
 };
 
-export const getfindByIdUsers = async (id: string) => {
+export const getfindByIdUsersApi = async (id: string) => {
   try {
     const response = await AxiosCustom.get<IUsersById>(
       `/auth/findUserDataById?id=${id}`
@@ -31,7 +31,7 @@ export const getfindByIdUsers = async (id: string) => {
   }
 };
 
-export const deleteUsers = async (id: string) => {
+export const deleteUsersApi = async (id: string) => {
   try {
     const response = await AxiosCustom.delete<IResponseDefault>(
       `/auth/delete?id=${id}`
@@ -46,7 +46,7 @@ export const deleteUsers = async (id: string) => {
   }
 };
 
-export const createUsers = async (payload: IUserCreate) => {
+export const createUsersApi = async (payload: IUserCreate) => {
   try {
     const response = await AxiosCustom.post<IResponseDefault>(
       `/auth/register`,
@@ -62,7 +62,7 @@ export const createUsers = async (payload: IUserCreate) => {
   }
 };
 
-export const editUsers = async (payload: IUserEdit) => {
+export const editUsersApi = async (payload: IUserEdit) => {
   try {
     const response = await AxiosCustom.patch<IResponseDefault>(
       `/auth/editUser`,

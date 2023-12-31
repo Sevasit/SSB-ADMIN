@@ -12,10 +12,10 @@ import React from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import useGetType from "../../../../hooks/type/useGetType";
-import useCreateUsers from "../../../../hooks/users/useCreateUsers";
 import toast, { Toaster } from "react-hot-toast";
 import useGetByIdUsers from "../../../../hooks/users/useGetByIdUsers";
 import useEditUsers from "../../../../hooks/users/useEditUsers";
+import { signIn, useSession } from "next-auth/react";
 
 type FormData = {
   name: string;
@@ -29,6 +29,16 @@ type FormData = {
 };
 
 const EditEmp = () => {
+  const { data: session, status } = useSession();
+  const user = session?.user;
+  const email = user?.email;
+  console.log("user", user);
+  console.log("session client", session);
+
+  if (status === "unauthenticated") {
+    signIn();
+  }
+
   const router = useRouter();
   const { employeeId } = useParams();
 
@@ -49,7 +59,7 @@ const EditEmp = () => {
   const watchFieldsPassword = watch(["password", "newPassword"]);
 
   React.useEffect(() => {
-    if (!GetIdisLoading && !GetIdisError && dataGetId) {
+    if (!GetIdisLoading && !GetIdisError && dataGetId!!) {
       reset({
         name: dataGetId.firstName,
         lastname: dataGetId.lastName,
@@ -57,7 +67,7 @@ const EditEmp = () => {
         phone: dataGetId.phone,
       });
     }
-  }, [dataGetId, GetIdisLoading, GetIdisError, reset]);
+  }, [dataGetId!!, GetIdisLoading, GetIdisError, reset]);
 
   const {
     data: dataType = [],
@@ -88,7 +98,7 @@ const EditEmp = () => {
       .then((data) => {
         console.log(data);
         if (data.message === "Updated user successfully") {
-          toast.success("อัพเดตข้อมูลผู้ใช้งานเรียบร้อย");
+          toast.success("อัพเดตข้อมูลผู้ใช้งานสำเร็จ");
           router.push("/employee");
         } else if (data.message === "Invalid password") {
           toast.error("รหัสผ่านเก่าผิดกรุณาลองใหม่", {
