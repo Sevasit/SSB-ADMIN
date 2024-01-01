@@ -11,3 +11,9 @@ export interface ITypeCreate {
   typeName: string;
   typeCode: string;
 }
+
+export interface ITypeEdit {
+  _id: string;
+  typeName: string;
+  typeCode: string;
+}
