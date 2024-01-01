@@ -5,6 +5,9 @@ import AxiosCustom from "../../../../../utils/AxiosApi";
 import { IUserResponse } from "../../../../../types/IUserResponse";
 
 const handler = NextAuth({
+  session: {
+    maxAge: 24 * 60 * 60, // 1 hour for session
+  },
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
     signIn: "/login",
@@ -51,8 +54,6 @@ const handler = NextAuth({
       return token;
     },
     session: async ({ session, token }) => {
-      //session จะหมดอายุใน 24 ชม.
-      session.expires = (Date.now() + 24 * 60 * 60 * 1000).toString();
       const res = await AxiosCustom.get<IUserResponse>(
         `/auth/findUserData?email=${session.user?.email}`
       );
