@@ -4,6 +4,9 @@ import AxiosCustom from "./AxiosApi";
 import { IUserResponse } from "../types/IUserResponse";
 
 export const authOptions: NextAuthOptions = {
+  session: {
+    maxAge: 24 * 60 * 60, // 1 hour for session
+  },
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
     signIn: "/login",
