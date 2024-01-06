@@ -14,8 +14,8 @@ import FontPrompt from "../../utils/customFonts";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "RMS-RMUTT",
-  description: "",
+  title: "SSB-BA",
+  description: "Suggestion system for BUS",
 };
 
 export default async function RootLayout({

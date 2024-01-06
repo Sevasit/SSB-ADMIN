@@ -35,9 +35,9 @@ const EditEmp = () => {
   console.log("user", user);
   console.log("session client", session);
 
-  if (status === "unauthenticated") {
-    signIn();
-  }
+  // if (status === "unauthenticated") {
+  //   signIn();
+  // }
 
   const router = useRouter();
   const { employeeId } = useParams();

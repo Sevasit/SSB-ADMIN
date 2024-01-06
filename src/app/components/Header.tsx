@@ -10,11 +10,11 @@ const Header = () => {
   const router = useRouter();
   const { data: session, status } = useSession();
   const handleSignOut = async () => {
-    const data = await signOut({ redirect: false, callbackUrl: "/" });
+    await signOut({ redirect: true, callbackUrl: "/" });
 
-    if (data?.url) {
-      router.push(data.url);
-    }
+    // if (data?.url) {
+    //   router.push(data.url);
+    // }
   };
 
   return (

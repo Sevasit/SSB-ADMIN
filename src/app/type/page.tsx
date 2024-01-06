@@ -12,9 +12,9 @@ const Type = (props: Props) => {
   console.log("user", user);
   console.log("session client", session);
 
-  if (status === "unauthenticated") {
-    signIn();
-  }
+  // if (status === "unauthenticated") {
+  //   signIn();
+  // }
   return (
     <div>
       <Types />
