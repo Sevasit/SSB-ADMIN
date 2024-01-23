@@ -8,8 +8,8 @@ function Page({}: Props) {
   const { data: session, status } = useSession();
   const user = session?.user;
   const email = user?.email;
-  // console.log("user", user);
-  // console.log("session client", session);
+  console.log("user", user);
+  console.log("session client", session);
 
   // if (status === "loading") {
   //   return <div>Loading...</div>;

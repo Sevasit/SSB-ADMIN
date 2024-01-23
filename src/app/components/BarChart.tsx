@@ -44,7 +44,7 @@ const BarChart = () => {
       plugins: {
         title: {
           display: true,
-          text: "Report of week",
+          text: "จำนวนปัญหาในสัปดาห์นี้",
           font: {
             size: 25,
           },

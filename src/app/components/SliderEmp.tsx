@@ -9,7 +9,7 @@ const Slider = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="flex">
       <div className="fixed w-28 pt-24 h-screen p-4 bg-[#f0f4f2] border-r-[1px] flex flex-col justify-between">
-        <div className="flex flex-col items-center gap-2">
+        <div className="flex flex-col items-center gap-3">
           <Link
             href="/dashboard"
             className=" w-16 text-white gap-2  bg-[#00DC82] duration-200 ease-linear hover:bg-gray-300 hover:text-black p-2 rounded-lg flex flex-col justify-center items-center"
@@ -20,7 +20,7 @@ const Slider = ({ children }: { children: React.ReactNode }) => {
             </span>
           </Link>
           <Link
-            href="/employee"
+            href="/approve"
             className="w-16 bg-gray-200 duration-200 ease-linear hover:bg-gray-300 p-2 rounded-lg flex flex-col justify-between items-center gap-2"
           >
             <IoPaperPlaneOutline size={28} />
@@ -29,7 +29,7 @@ const Slider = ({ children }: { children: React.ReactNode }) => {
             </span>
           </Link>
           <Link
-            href="/employee"
+            href="/completed"
             className="w-16 bg-gray-200 duration-200 ease-linear hover:bg-gray-300 p-2 rounded-lg flex flex-col justify-between items-center gap-2"
           >
             <IoMdCheckmarkCircleOutline size={28} />
