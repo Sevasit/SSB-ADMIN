@@ -3,6 +3,7 @@ import {
   ITaskById,
   ITaskConfirm,
   ITaskCount,
+  ITaskCountToGraph,
   ITaskCurrent,
   ITaskPending,
 } from "../../../../types/ITask";
@@ -72,6 +73,21 @@ export const findTaskCount = async () => {
   try {
     const response = await AxiosCustom.get<ITaskCount[]>(
       `/tasks/findTaskCount`
+    );
+    if (response?.data === undefined) {
+      throw "error undefined";
+    }
+    return response?.data;
+  } catch (err) {
+    console.error(err);
+    throw Promise.reject(err);
+  }
+};
+
+export const findTaskCountToGraph = async () => {
+  try {
+    const response = await AxiosCustom.get<ITaskCountToGraph[]>(
+      `/tasks/findTaskCountToGraph`
     );
     if (response?.data === undefined) {
       throw "error undefined";

@@ -38,3 +38,9 @@ export interface ITaskCount {
   _id: string;
   count: number;
 }
+
+export interface ITaskCountToGraph {
+  _id: string;
+  type: string;
+  count: number;
+}
