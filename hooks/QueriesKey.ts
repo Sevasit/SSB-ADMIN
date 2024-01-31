@@ -20,6 +20,7 @@ const getTasksCurrent = "GET_TASKS_CURRENT";
 const approveTask = "APPROVE_TASK";
 const sendTask = "SEND_TASK";
 const getTasksCount = "GET_TASKS_COUNT";
+const getTasksCountToGraph = "GET_TASKS_COUNTTOGRAPH";
 
 //add export key
 export {
@@ -40,4 +41,5 @@ export {
   sendTask,
   getTasksCurrent,
   getTasksCount,
+  getTasksCountToGraph,
 };

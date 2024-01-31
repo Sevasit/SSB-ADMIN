@@ -14,7 +14,7 @@ import FontPrompt from "../../utils/customFonts";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "SSB-BA",
+  title: "SSB-ADMIN",
   description: "Suggestion system for BUS",
 };
 
