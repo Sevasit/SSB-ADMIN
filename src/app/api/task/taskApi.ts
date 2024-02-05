@@ -71,9 +71,7 @@ export const getFindCurrentTaskByTypeApi = async (type: string) => {
 
 export const findTaskCount = async () => {
   try {
-    const response = await AxiosCustom.get<ITaskCount[]>(
-      `/tasks/findTaskCount`
-    );
+    const response = await AxiosCustom.get<ITaskCount>(`/tasks/findTaskCount`);
     if (response?.data === undefined) {
       throw "error undefined";
     }

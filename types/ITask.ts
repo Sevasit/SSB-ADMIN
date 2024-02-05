@@ -35,8 +35,8 @@ export interface ITaskCurrent {
 }
 
 export interface ITaskCount {
-  _id: string;
-  count: number;
+  label: Array<string>;
+  count: Array<number>;
 }
 
 export interface ITaskCountToGraph {

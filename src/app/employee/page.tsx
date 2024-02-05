@@ -16,7 +16,7 @@ function Employee({}: Props) {
   //   signIn();
   // }
   return (
-    <div>
+    <div className="p-4">
       <Customer />
     </div>
   );

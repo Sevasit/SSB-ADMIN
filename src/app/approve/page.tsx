@@ -24,7 +24,7 @@ function ApprovePage({}: Props) {
   } = useGetTaskPending(session?.userData.role!!);
   return (
     <>
-      <div className="bg-white min-h-screen">
+      <div className="bg-white min-h-screen p-4">
         <div className="p-4">
           <div className=" mb-3 text-xl font-semibold border-b-2 p-2">
             หน้าอนุมัติการเเจ้งปัญหา
@@ -64,7 +64,7 @@ function ApprovePage({}: Props) {
                     <div>
                       <Link
                         href={`/approve/${item._id}`}
-                        className=" w-36 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#dc8000] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer py-1 rounded-lg flex gap-1 justify-between px-4 items-center"
+                        className=" w-36 bg-white border-2 border-[#dc8000] text-[#dc8000] hover:bg-[#dc8000] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer py-1 rounded-lg flex gap-1 justify-between px-4 items-center"
                       >
                         <span>ดูรายละเอียด</span>
                         <BiEdit className=" text-lg" />

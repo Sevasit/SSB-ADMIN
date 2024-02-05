@@ -52,6 +52,9 @@ const Empolyee = (props: Props) => {
     <>
       <div className="bg-white min-h-screen">
         <div className="p-4">
+          <div className=" mb-3 text-xl font-semibold border-b-2 p-2">
+            หน้าจัดการพนักงาน
+          </div>
           <div className="w-full m-auto p-4 border rounded-lg bg-white overflow-y-auto">
             <div className="flex justify-end">
               <Link href="/employee/creating">
@@ -96,7 +99,7 @@ const Empolyee = (props: Props) => {
                     <div>
                       <div
                         onClick={() => router.push(`/employee/${item._id}`)}
-                        className=" w-24 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#dc8000] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer py-1 rounded-lg flex gap-1 justify-between px-4 items-center"
+                        className=" w-24 bg-white border-2 border-[#dc8000] text-[#dc8000] hover:bg-[#dc8000] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer py-1 rounded-lg flex gap-1 justify-between px-4 items-center"
                       >
                         <span>เเก้ไข</span>
                         <BiEdit className=" text-lg" />
@@ -105,7 +108,7 @@ const Empolyee = (props: Props) => {
                     <div>
                       <div
                         onClick={() => handleClickOpen(item._id)}
-                        className=" w-24 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer py-1 rounded-lg flex gap-1 justify-between px-4 items-center"
+                        className=" w-24 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer py-1 rounded-lg flex gap-1 justify-between px-4 items-center"
                       >
                         <span>ลบ</span>
                         <RiDeleteBin6Line className=" text-lg" />
@@ -125,7 +128,7 @@ const Empolyee = (props: Props) => {
           <DialogActions>
             <div
               onClick={handleClose}
-              className=" w-24 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-between px-4 items-center"
+              className=" w-24 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-between px-4 items-center"
             >
               <span>ยกเลิก</span>
             </div>

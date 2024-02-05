@@ -16,7 +16,7 @@ const Type = (props: Props) => {
   //   signIn();
   // }
   return (
-    <div>
+    <div className="p-4">
       <Types />
     </div>
   );

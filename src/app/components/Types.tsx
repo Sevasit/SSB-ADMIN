@@ -94,6 +94,7 @@ const Types = (props: Props) => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FormData>();
 
@@ -212,6 +213,7 @@ const Types = (props: Props) => {
   };
 
   const handleCloseCreate = () => {
+    reset();
     setOpenCreate(false);
   };
 
@@ -232,6 +234,9 @@ const Types = (props: Props) => {
     <>
       <div className="bg-white min-h-screen">
         <div className="p-4">
+          <div className=" mb-3 text-xl font-semibold border-b-2 p-2">
+            หน้าจัดการประเภทงาน
+          </div>
           <div className="w-full m-auto p-4 border rounded-lg bg-white overflow-y-auto">
             <div className="flex justify-end">
               <div
@@ -242,7 +247,7 @@ const Types = (props: Props) => {
                 <MdOutlineAddBox className=" text-xl" />
               </div>
             </div>
-            <div className="my-3 p-2 grid grid-cols-2 md:grid-cols-6 items-center justify-between">
+            <div className="my-3 p-2 grid grid-cols-2 md:grid-cols-5 items-center justify-between">
               <span>ชื่อประเภท</span>
               <span className="sm:text-left text-right">Code ประเภท</span>
               <span className="hidden md:grid">วันที่สร้าง</span>
@@ -254,7 +259,7 @@ const Types = (props: Props) => {
                 dataTypes.map((item, id) => (
                   <li
                     key={item._id}
-                    className="bg-gray-50 hover:bg-gray-100 rounded-lg my-3 p-2 grid md:grid-cols-6 sm:grid-cols-3 grid-cols-2 items-center justify-between"
+                    className="bg-gray-50 hover:bg-gray-100 rounded-lg my-3 p-2 grid md:grid-cols-5 sm:grid-cols-3 grid-cols-2 items-center justify-between"
                   >
                     <div className="flex items-center">
                       <div className="bg-[#00DC82] rounded-lg p-2 text-white">
@@ -271,7 +276,7 @@ const Types = (props: Props) => {
                     <div>
                       <div
                         onClick={() => handleClickOpenEdit(item._id)}
-                        className=" w-24 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#dc8000] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer py-1 rounded-lg flex gap-1 justify-between px-4 items-center"
+                        className=" w-24 bg-white border-2 border-[#dc8000] text-[#dc8000] hover:bg-[#dc8000] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer py-1 rounded-lg flex gap-1 justify-between px-4 items-center"
                       >
                         <span>เเก้ไข</span>
                         <BiEdit className=" text-lg" />
@@ -280,7 +285,7 @@ const Types = (props: Props) => {
                     <div>
                       <div
                         onClick={() => handleClickOpen(item._id)}
-                        className=" w-24 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer py-1 rounded-lg flex gap-1 justify-between px-4 items-center"
+                        className=" w-24 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer py-1 rounded-lg flex gap-1 justify-between px-4 items-center"
                       >
                         <span>ลบ</span>
                         <RiDeleteBin6Line className=" text-lg" />
@@ -297,16 +302,16 @@ const Types = (props: Props) => {
           <div className=" m-3 text-xl">
             {"คุณต้องการที่จะลบข้อมูลประเภทงานหรือไม่?"}
           </div>
-          <DialogActions>
+          <DialogActions className="flex justify-around items-center">
             <div
               onClick={handleClose}
-              className=" w-24 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-between px-4 items-center"
+              className=" w-24 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center"
             >
               <span>ยกเลิก</span>
             </div>
             <div
               onClick={handleSubmitDelete}
-              className=" w-24 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#00DC82] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-between px-4 items-center"
+              className=" w-24 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#00DC82] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center"
             >
               <span>ยืนยัน</span>
             </div>
@@ -368,7 +373,7 @@ const Types = (props: Props) => {
               <div className="flex gap-10 items-start md:justify-end justify-center md:items-center">
                 <div
                   onClick={handleCloseCreate}
-                  className=" w-20 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-between px-4 items-center"
+                  className=" w-20 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-between px-4 items-center"
                 >
                   <span>ยกเลิก</span>
                 </div>
@@ -445,7 +450,7 @@ const Types = (props: Props) => {
               <div className="flex gap-10 items-start md:justify-end justify-center md:items-center">
                 <div
                   onClick={handleCloseEdit}
-                  className=" w-20 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-between px-4 items-center"
+                  className=" w-20 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-between px-4 items-center"
                 >
                   <span>ยกเลิก</span>
                 </div>
