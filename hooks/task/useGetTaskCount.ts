@@ -3,7 +3,7 @@ import { ITaskCount } from "../../types/ITask";
 import { getTasksCount } from "../QueriesKey";
 import { findTaskCount } from "@/app/api/task/taskApi";
 const useGetTaskCount = () => {
-  return useQuery<ITaskCount[], { message: string }>(
+  return useQuery<ITaskCount, { message: string }>(
     [getTasksCount],
     async () => await findTaskCount()
   );

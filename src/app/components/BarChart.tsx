@@ -10,7 +10,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import useGetTaskCountToGraph from "../../../hooks/task/useGetTaskCountToGraph";
+import useGetTaskCount from "../../../hooks/task/useGetTaskCount";
 
 ChartJS.register(
   CategoryScale,
@@ -22,11 +22,7 @@ ChartJS.register(
 );
 
 const BarChart = () => {
-  const {
-    data: dataTaskCountToGraph = [],
-    isLoading,
-    isError,
-  } = useGetTaskCountToGraph();
+  const { data: dataTaskCountToGraph, isLoading, isError } = useGetTaskCount();
 
   const [chartData, setChartData] = useState<any>({
     datasets: [],
@@ -35,18 +31,12 @@ const BarChart = () => {
   const [chartOptions, setChartOptions] = useState({});
 
   useEffect(() => {
-    let labels: any = [];
-    let counts: any = [];
-    for (let i = 0; i < dataTaskCountToGraph.length; i++) {
-      labels.push(dataTaskCountToGraph[i].type);
-      counts.push(dataTaskCountToGraph[i].count);
-    }
     setChartData({
-      labels: labels,
+      labels: dataTaskCountToGraph?.label,
       datasets: [
         {
           label: "จำนวนปัญหา",
-          data: counts,
+          data: dataTaskCountToGraph?.count,
           backgroundColor: "#00DC82",
           color: "#fff",
         },
@@ -71,7 +61,7 @@ const BarChart = () => {
   }, [dataTaskCountToGraph]);
 
   return (
-    <div className="w-full md:col-span-2 relative lg:h-[78vh] h-[58vh] m-auto p-4 border rounded-lg bg-[#f0f4f2]">
+    <div className="w-full md:col-span-2 relative lg:h-[70vh] h-[58vh] m-auto p-4 border rounded-lg bg-[#f0f4f2]">
       <Bar data={chartData} options={chartOptions} />
     </div>
   );

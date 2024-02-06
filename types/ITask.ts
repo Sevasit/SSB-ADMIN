@@ -3,6 +3,7 @@ import { Dayjs } from "dayjs";
 export interface ITaskPending {
   _id: string;
   name: string;
+  phone: string;
   type: string;
   building: string;
   createdAt: Dayjs;
@@ -35,8 +36,8 @@ export interface ITaskCurrent {
 }
 
 export interface ITaskCount {
-  _id: string;
-  count: number;
+  label: Array<string>;
+  count: Array<number>;
 }
 
 export interface ITaskCountToGraph {

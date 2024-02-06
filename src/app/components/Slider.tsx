@@ -11,7 +11,7 @@ const Slider = ({ children }: { children: React.ReactNode }) => {
         <div className="flex flex-col items-center gap-2">
           <Link
             href="/dashboard"
-            className=" w-20 text-white gap-2  bg-[#00DC82] duration-200 ease-linear hover:bg-gray-300 hover:text-black p-2 rounded-lg flex flex-col justify-center items-center"
+            className=" w-20 text-white gap-2 border  bg-[#00DC82] duration-200 ease-linear hover:bg-[#00DC82] hover:border hover:border-black hover:text-slate-800 p-2 rounded-lg flex flex-col justify-center items-center"
           >
             <RxDashboard size={28} />
             <span className=" text-[10px] uppercase font-semibold">
@@ -20,21 +20,21 @@ const Slider = ({ children }: { children: React.ReactNode }) => {
           </Link>
           <Link
             href="/task"
-            className="w-20 bg-gray-200 duration-200 ease-linear hover:bg-gray-300 p-2 rounded-lg flex flex-col justify-between items-center gap-2"
+            className="w-20 text-white border bg-[#00DC82] duration-200 ease-linear hover:bg-[#00DC82] hover:border hover:border-black hover:text-slate-800 p-2 rounded-lg flex flex-col justify-between items-center gap-2"
           >
             <LuFileBox size={28} />
             <span className=" text-[10px] uppercase font-semibold">Tasks</span>
           </Link>
           <Link
             href="/type"
-            className="w-20 bg-gray-200 duration-200 ease-linear hover:bg-gray-300 p-2 rounded-lg flex flex-col justify-between items-center gap-2"
+            className="w-20 text-white border bg-[#00DC82] duration-200 ease-linear hover:bg-[#00DC82] hover:border hover:border-black hover:text-slate-800 p-2 rounded-lg flex flex-col justify-between items-center gap-2"
           >
             <BsBoxes size={28} />
             <span className=" text-[10px] uppercase font-semibold">Types</span>
           </Link>
           <Link
             href="/employee"
-            className="w-20 bg-gray-200 duration-200 ease-linear hover:bg-gray-300 p-2 rounded-lg flex flex-col justify-between items-center gap-2"
+            className="w-20 text-white border bg-[#00DC82] duration-200 ease-linear hover:bg-[#00DC82] hover:border hover:border-black hover:text-slate-800 p-2 rounded-lg flex flex-col justify-between items-center gap-2"
           >
             <RxPerson size={28} />
             <span className=" text-[10px] uppercase font-semibold">Users</span>

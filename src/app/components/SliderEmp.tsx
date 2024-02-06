@@ -12,7 +12,7 @@ const Slider = ({ children }: { children: React.ReactNode }) => {
         <div className="flex flex-col items-center gap-3">
           <Link
             href="/dashboard"
-            className=" w-20 text-white gap-2  bg-[#00DC82] duration-200 ease-linear hover:bg-gray-300 hover:text-black p-2 rounded-lg flex flex-col justify-center items-center"
+            className=" w-20 text-white gap-2 border  bg-[#00DC82] duration-200 ease-linear hover:bg-[#00DC82] hover:border hover:border-black hover:text-slate-800 p-2 rounded-lg flex flex-col justify-center items-center"
           >
             <RxDashboard size={28} />
             <span className=" text-[10px] uppercase font-semibold">
@@ -21,7 +21,7 @@ const Slider = ({ children }: { children: React.ReactNode }) => {
           </Link>
           <Link
             href="/approve"
-            className="w-20 bg-gray-200 duration-200 ease-linear hover:bg-gray-300 p-2 rounded-lg flex flex-col justify-between items-center gap-2"
+            className=" w-20 text-white gap-2 border  bg-[#00DC82] duration-200 ease-linear hover:bg-[#00DC82] hover:border hover:border-black hover:text-slate-800 p-2 rounded-lg flex flex-col justify-center items-center"
           >
             <IoPaperPlaneOutline size={28} />
             <span className=" text-[10px] uppercase font-semibold">
@@ -30,7 +30,7 @@ const Slider = ({ children }: { children: React.ReactNode }) => {
           </Link>
           <Link
             href="/completed"
-            className="w-20 bg-gray-200 duration-200 ease-linear hover:bg-gray-300 p-2 rounded-lg flex flex-col justify-between items-center gap-2"
+            className=" w-20 text-white gap-2 border  bg-[#00DC82] duration-200 ease-linear hover:bg-[#00DC82] hover:border hover:border-black hover:text-slate-800 p-2 rounded-lg flex flex-col justify-center items-center"
           >
             <IoMdCheckmarkCircleOutline size={28} />
             <span className=" text-[10px] uppercase font-semibold">

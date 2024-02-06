@@ -5,6 +5,7 @@ export interface IType {
   typeName: string;
   typeCode: string;
   createdAt: Dayjs;
+  updatedAt: Dayjs;
 }
 
 export interface ITypeCreate {

@@ -26,6 +26,9 @@ import useCreateType from "../../../hooks/type/useCreateType";
 import useEditType from "../../../hooks/type/useEditType";
 import useGetTypeById from "../../../hooks/type/useGetTypeById";
 import { IType } from "../../../types/IType";
+import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid";
+import TableLoading from "./TableLoading";
+import NoRowsOverlay from "./NoRows";
 
 dayjs.extend(buddhistEra);
 dayjs.locale("th");
@@ -94,6 +97,7 @@ const Types = (props: Props) => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FormData>();
 
@@ -212,6 +216,7 @@ const Types = (props: Props) => {
   };
 
   const handleCloseCreate = () => {
+    reset();
     setOpenCreate(false);
   };
 
@@ -228,10 +233,109 @@ const Types = (props: Props) => {
       toast.error("ลบข้อมูลประเภทงานไม่สำเร็จ");
     }
   };
+
+  const columns: GridColDef[] = [
+    {
+      field: "typeName",
+      headerAlign: "center",
+      align: "left",
+      headerName: "ชื่อประเภท",
+      headerClassName: "text-[#0f8d67]",
+      width: 250,
+      renderCell: (params) => {
+        return (
+          <div className="flex items-center ml-2">
+            <div className="bg-[#00DC82] rounded-lg p-2 text-white">
+              <RxCube />
+            </div>
+            <p className="pl-4 text-sm">{params.row.typeName}</p>
+          </div>
+        );
+      },
+    },
+    {
+      field: "typeCode",
+      headerAlign: "center",
+      align: "center",
+      headerName: "Code ประเภท",
+      headerClassName: "text-[#0f8d67]",
+      width: 200,
+    },
+
+    {
+      field: "createdAt",
+      headerAlign: "center",
+      align: "center",
+      headerName: "วันที่สร้าง",
+      headerClassName: "text-[#0f8d67]",
+      width: 200,
+    },
+    {
+      field: "updatedAt",
+      headerAlign: "center",
+      align: "center",
+      headerName: "วันที่เเก้ไข",
+      headerClassName: "text-[#0f8d67]",
+      width: 200,
+    },
+    {
+      field: "เเก้ไข",
+      width: 250,
+      headerAlign: "center",
+      headerClassName: "text-[#0f8d67]",
+      align: "center",
+      renderCell: (params) => {
+        return (
+          <div
+            onClick={() => handleClickOpenEdit(params.row._id)}
+            className=" w-24 bg-white border-2 border-[#dc8000] text-[#dc8000] hover:bg-[#dc8000] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer py-1 rounded-lg flex gap-1 justify-between px-4 items-center"
+          >
+            <span>เเก้ไข</span>
+            <BiEdit className=" text-lg" />
+          </div>
+        );
+      },
+      sortable: false,
+    },
+    {
+      field: "ลบ",
+      width: 150,
+      headerAlign: "center",
+      headerClassName: "text-[#0f8d67]",
+      align: "center",
+      renderCell: (params) => {
+        return (
+          <div
+            onClick={() => handleClickOpen(params.row._id)}
+            className=" w-24 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer py-1 rounded-lg flex gap-1 justify-between px-4 items-center"
+          >
+            <span>ลบ</span>
+            <RiDeleteBin6Line className=" text-lg" />
+          </div>
+        );
+      },
+      sortable: false,
+    },
+  ];
+
+  const rows: GridRowsProp = [
+    ...dataTypes.map((item, index) => {
+      return {
+        _id: item._id,
+        typeName: item.typeName,
+        typeCode: item.typeCode,
+        createdAt: dayjs(item.createdAt).format("DD MMMM BBBB"),
+        updatedAt: dayjs(item.updatedAt).format("DD MMMM BBBB"),
+      };
+    }),
+  ];
   return (
     <>
       <div className="bg-white min-h-screen">
         <div className="p-4">
+          <div className=" mb-3 text-xl font-semibold border-b-2 p-2">
+            หน้าจัดการประเภทงาน
+          </div>
           <div className="w-full m-auto p-4 border rounded-lg bg-white overflow-y-auto">
             <div className="flex justify-end">
               <div
@@ -242,7 +346,31 @@ const Types = (props: Props) => {
                 <MdOutlineAddBox className=" text-xl" />
               </div>
             </div>
-            <div className="my-3 p-2 grid grid-cols-2 md:grid-cols-6 items-center justify-between">
+            {getISLoading ? (
+              <TableLoading />
+            ) : (
+              <div className=" h-[400px] pt-3">
+                <DataGrid
+                  components={{ NoRowsOverlay }}
+                  rows={rows}
+                  getRowId={(row: any) => row._id}
+                  columns={columns}
+                  pageSizeOptions={[5, 10]}
+                  initialState={{
+                    pagination: {
+                      paginationModel: { page: 0, pageSize: 5 },
+                    },
+                  }}
+                  disableColumnFilter
+                  disableColumnMenu
+                  disableVirtualization
+                  disableRowSelectionOnClick
+                  disableColumnSelector
+                  disableDensitySelector
+                />
+              </div>
+            )}
+            {/* <div className="my-3 p-2 grid grid-cols-2 md:grid-cols-5 items-center justify-between">
               <span>ชื่อประเภท</span>
               <span className="sm:text-left text-right">Code ประเภท</span>
               <span className="hidden md:grid">วันที่สร้าง</span>
@@ -254,7 +382,7 @@ const Types = (props: Props) => {
                 dataTypes.map((item, id) => (
                   <li
                     key={item._id}
-                    className="bg-gray-50 hover:bg-gray-100 rounded-lg my-3 p-2 grid md:grid-cols-6 sm:grid-cols-3 grid-cols-2 items-center justify-between"
+                    className="bg-gray-50 hover:bg-gray-100 rounded-lg my-3 p-2 grid md:grid-cols-5 sm:grid-cols-3 grid-cols-2 items-center justify-between"
                   >
                     <div className="flex items-center">
                       <div className="bg-[#00DC82] rounded-lg p-2 text-white">
@@ -271,7 +399,7 @@ const Types = (props: Props) => {
                     <div>
                       <div
                         onClick={() => handleClickOpenEdit(item._id)}
-                        className=" w-24 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#dc8000] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer py-1 rounded-lg flex gap-1 justify-between px-4 items-center"
+                        className=" w-24 bg-white border-2 border-[#dc8000] text-[#dc8000] hover:bg-[#dc8000] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer py-1 rounded-lg flex gap-1 justify-between px-4 items-center"
                       >
                         <span>เเก้ไข</span>
                         <BiEdit className=" text-lg" />
@@ -280,7 +408,7 @@ const Types = (props: Props) => {
                     <div>
                       <div
                         onClick={() => handleClickOpen(item._id)}
-                        className=" w-24 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer py-1 rounded-lg flex gap-1 justify-between px-4 items-center"
+                        className=" w-24 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer py-1 rounded-lg flex gap-1 justify-between px-4 items-center"
                       >
                         <span>ลบ</span>
                         <RiDeleteBin6Line className=" text-lg" />
@@ -288,7 +416,7 @@ const Types = (props: Props) => {
                     </div>
                   </li>
                 ))}
-            </ul>
+            </ul> */}
           </div>
         </div>
       </div>
@@ -297,16 +425,16 @@ const Types = (props: Props) => {
           <div className=" m-3 text-xl">
             {"คุณต้องการที่จะลบข้อมูลประเภทงานหรือไม่?"}
           </div>
-          <DialogActions>
+          <DialogActions className="flex justify-around items-center">
             <div
               onClick={handleClose}
-              className=" w-24 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-between px-4 items-center"
+              className=" w-24 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center"
             >
               <span>ยกเลิก</span>
             </div>
             <div
               onClick={handleSubmitDelete}
-              className=" w-24 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#00DC82] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-between px-4 items-center"
+              className=" w-24 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#00DC82] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center"
             >
               <span>ยืนยัน</span>
             </div>
@@ -368,7 +496,7 @@ const Types = (props: Props) => {
               <div className="flex gap-10 items-start md:justify-end justify-center md:items-center">
                 <div
                   onClick={handleCloseCreate}
-                  className=" w-20 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-between px-4 items-center"
+                  className=" w-20 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-between px-4 items-center"
                 >
                   <span>ยกเลิก</span>
                 </div>
@@ -445,7 +573,7 @@ const Types = (props: Props) => {
               <div className="flex gap-10 items-start md:justify-end justify-center md:items-center">
                 <div
                   onClick={handleCloseEdit}
-                  className=" w-20 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-between px-4 items-center"
+                  className=" w-20 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-between px-4 items-center"
                 >
                   <span>ยกเลิก</span>
                 </div>
