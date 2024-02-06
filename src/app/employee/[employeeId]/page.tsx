@@ -59,6 +59,10 @@ const EditEmp = () => {
   const watchFieldsPassword = watch(["password", "newPassword"]);
 
   React.useEffect(() => {
+    //if error fetch data with useGetByIdUsers is error navigate to employee page
+    if (GetIdisError) {
+      router.push("/employee");
+    }
     if (!GetIdisLoading && !GetIdisError && dataGetId!!) {
       reset({
         name: dataGetId.firstName,
@@ -67,7 +71,7 @@ const EditEmp = () => {
         phone: dataGetId.phone,
       });
     }
-  }, [dataGetId!!, GetIdisLoading, GetIdisError, reset]);
+  }, [dataGetId!!, GetIdisLoading!!, GetIdisError!!, reset, router]);
 
   const {
     data: dataType = [],
@@ -135,9 +139,9 @@ const EditEmp = () => {
     <>
       <div className="flex flex-col items-center">
         <hr className="my-5" />
-        <Container component="main" maxWidth="md">
+        <Container component="main" maxWidth="lg">
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="px-[5%] mt-5 flex flex-col gap-4 p-5 rounded-lg border-4 border-[#00DC82]">
+            <div className="px-[5%] mt-5 flex flex-col gap-4 p-5 rounded-lg border shadow-md">
               <div className="text-lg text-start w-full font-semibold">
                 เเก้ไขบัญชีผู้ใช้
               </div>
@@ -145,7 +149,7 @@ const EditEmp = () => {
                 <div className="flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-[44px]">
                   <FormControl
                     size="small"
-                    sx={{ minWidth: 300, minHeight: 60 }}
+                    sx={{ minWidth: 400, minHeight: 60 }}
                   >
                     <TextField
                       id="name"
@@ -168,7 +172,7 @@ const EditEmp = () => {
                 <div className="flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-[44px]">
                   <FormControl
                     size="small"
-                    sx={{ minWidth: 300, minHeight: 60 }}
+                    sx={{ minWidth: 400, minHeight: 60 }}
                   >
                     <TextField
                       id="lastname"
@@ -193,7 +197,7 @@ const EditEmp = () => {
                 <div className="flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-[44px]">
                   <FormControl
                     size="small"
-                    sx={{ minWidth: 300, minHeight: 60 }}
+                    sx={{ minWidth: 400, minHeight: 60 }}
                   >
                     <TextField
                       id="email"
@@ -225,7 +229,7 @@ const EditEmp = () => {
                 <div className="flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-[44px]">
                   <FormControl
                     size="small"
-                    sx={{ minWidth: 300, minHeight: 60 }}
+                    sx={{ minWidth: 400, minHeight: 60 }}
                   >
                     <TextField
                       id="phone"
@@ -270,7 +274,7 @@ const EditEmp = () => {
                 <div className="flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-[44px]">
                   <FormControl
                     size="small"
-                    sx={{ minWidth: 300, minHeight: 60 }}
+                    sx={{ minWidth: 400, minHeight: 60 }}
                   >
                     <TextField
                       id="password"
@@ -301,7 +305,7 @@ const EditEmp = () => {
                 <div className="flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-[44px]">
                   <FormControl
                     size="small"
-                    sx={{ minWidth: 300, minHeight: 60 }}
+                    sx={{ minWidth: 400, minHeight: 60 }}
                   >
                     <TextField
                       id="newPassword"
@@ -340,7 +344,7 @@ const EditEmp = () => {
                 </div>
               </div>
               <div className="flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-20">
-                <FormControl size="small" sx={{ minWidth: 300, minHeight: 60 }}>
+                <FormControl size="small" sx={{ minWidth: 400, minHeight: 60 }}>
                   <TextField
                     id="oldPassword"
                     variant="outlined"
@@ -368,7 +372,7 @@ const EditEmp = () => {
                 </FormControl>
               </div>
               <div className="flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-20">
-                <FormControl size="small" sx={{ minWidth: 200, minHeight: 60 }}>
+                <FormControl size="small" sx={{ minWidth: 250, minHeight: 60 }}>
                   <InputLabel id="demo-simple-select-label" color="success">
                     ประเภทงาน
                   </InputLabel>
@@ -391,20 +395,19 @@ const EditEmp = () => {
                       "กรุณาเลือกประเภทงานผู้ใช้"}
                   </p>
                 </FormControl>
-              </div>
-
-              <div className="flex gap-10 items-start md:justify-end justify-center md:items-center mt-5">
-                <Link href="/employee">
-                  <div className=" w-20 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-between px-4 items-center">
-                    <span>ยกเลิก</span>
-                  </div>
-                </Link>
-                <button
-                  type="submit"
-                  className=" w-20 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#00DC82] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-between px-4 items-center"
-                >
-                  <span>ยืนยัน</span>
-                </button>
+                <div className="flex w-[550px] gap-10 justify-end">
+                  <Link href="/employee">
+                    <div className=" w-20 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-between px-4 items-center">
+                      <span>ยกเลิก</span>
+                    </div>
+                  </Link>
+                  <button
+                    type="submit"
+                    className=" w-20 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#00DC82] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-between px-4 items-center"
+                  >
+                    <span>ยืนยัน</span>
+                  </button>
+                </div>
               </div>
             </div>
           </form>

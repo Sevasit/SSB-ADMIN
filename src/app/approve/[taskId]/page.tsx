@@ -77,17 +77,17 @@ const ApproveDetail = (props: Props) => {
   };
   return (
     <>
-      <div className="flex flex-col items-center mx-[5%]">
-        <div className="mt-5 flex flex-col items-center gap-4 p-5 rounded-lg border-4 border-[#00DC82] w-full">
+      <div className="flex flex-col items-center mx-[5%] border shadow-md mt-5">
+        <div className="flex flex-col items-center gap-4 p-5 rounded-lg">
           <h2 className=" font-semibold text-xl">รายละเอียดปัญหา</h2>
-          <div className=" flex justify-center gap-10 items-center w-auto">
+          <div className=" flex justify-center gap-16 items-center w-auto">
             {data?.imageStart && (
               <Image
                 className=" border border-gray-300 shadow-xl rounded-md"
                 src={data?.imageStart as string}
                 alt="imageStart"
-                width={280}
-                height={280}
+                width={300}
+                height={300}
                 priority
               />
             )}
@@ -153,7 +153,7 @@ const ApproveDetail = (props: Props) => {
             <div className=" m-3 text-xl">
               {"คุณต้องการที่จะอนุมัติปัญหาหรือไม่?"}
             </div>
-            <DialogActions>
+            <DialogActions className="flex justify-around items-center">
               <div
                 onClick={handleClose}
                 className=" w-24 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-between px-4 items-center"

@@ -13,6 +13,7 @@ export interface IUsers {
   lastName: string;
   email: string;
   role: string;
+  createdAt: Dayjs;
   updatedAt: Dayjs;
 }
 

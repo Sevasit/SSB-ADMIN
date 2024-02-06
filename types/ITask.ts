@@ -3,6 +3,7 @@ import { Dayjs } from "dayjs";
 export interface ITaskPending {
   _id: string;
   name: string;
+  phone: string;
   type: string;
   building: string;
   createdAt: Dayjs;

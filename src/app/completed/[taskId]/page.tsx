@@ -151,8 +151,8 @@ const CompletedDetail = (props: Props) => {
 
   return (
     <>
-      <div className="flex flex-col items-center mx-[5%]">
-        <div className="mt-5 flex flex-col items-center gap-4 p-5 rounded-lg border-4 border-[#00DC82] w-full">
+      <div className="flex flex-col items-center mx-[5%] border shadow-md mt-5">
+        <div className="flex flex-col items-center gap-4 p-5 rounded-lg w-full">
           <h2 className=" font-semibold text-xl">รายละเอียดปัญหา</h2>
           <div className=" flex justify-center gap-10 items-center w-auto">
             {data?.imageStart && (
@@ -231,7 +231,7 @@ const CompletedDetail = (props: Props) => {
               <div>
                 <label
                   htmlFor="fileInput"
-                  className="w-auto border-2 bg-[#d7f2e7] border-black text-black duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-between p-2 items-center"
+                  className="w-auto border-2 bg-[#d7f2e7] hover:bg-[#a4b8b0] border-black text-black duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-between py-2 px-16 items-center"
                 >
                   อัพโหลดรูปภาพ
                 </label>
@@ -245,16 +245,16 @@ const CompletedDetail = (props: Props) => {
               </div>
               {nameImage && <div>{nameImage}</div>}
             </div>
-            <DialogActions className="flex justify-center items-center mt-3">
+            <DialogActions className="flex justify-around items-center mt-3">
               <div
                 onClick={handleClose}
-                className=" w-24 hover:bg-white border-2 hover:border-[#b91515] hover:text-[#b91515] bg-[#b91515] border-black text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center"
+                className=" w-24 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center"
               >
                 <span>ยกเลิก</span>
               </div>
               <div
                 onClick={handleUpload}
-                className=" w-24 hover:bg-white border-2 hover:border-[#0f8d67] hover:text-[#0f8d67] bg-[#00DC82] border-black text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center"
+                className=" w-24 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#00DC82] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center"
               >
                 <span>ยืนยัน</span>
               </div>

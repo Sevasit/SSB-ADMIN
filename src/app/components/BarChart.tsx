@@ -61,7 +61,7 @@ const BarChart = () => {
   }, [dataTaskCountToGraph]);
 
   return (
-    <div className="w-full md:col-span-2 relative lg:h-[68vh] h-[58vh] m-auto p-4 border rounded-lg bg-[#f0f4f2]">
+    <div className="w-full md:col-span-2 relative lg:h-[70vh] h-[58vh] m-auto p-4 border rounded-lg bg-[#f0f4f2]">
       <Bar data={chartData} options={chartOptions} />
     </div>
   );

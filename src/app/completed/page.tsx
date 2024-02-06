@@ -9,6 +9,9 @@ import useGetTaskComplete from "../../../hooks/task/useGetTaskComplete";
 import { FiUser } from "react-icons/fi";
 import { BiEdit } from "react-icons/bi";
 import { Toaster } from "react-hot-toast";
+import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid";
+import NoRowsOverlay from "../components/NoRows";
+import TableLoading from "../components/TableLoading";
 
 dayjs.extend(buddhistEra);
 dayjs.locale("th");
@@ -22,6 +25,101 @@ function CompletedPage({}: Props) {
     isLoading,
     isError,
   } = useGetTaskComplete(session?.userData.role!!);
+
+  function formatPhoneNumber(phoneNumber: string | undefined) {
+    if (phoneNumber === undefined) return "";
+    const formattedPhoneNumber = `${phoneNumber.slice(
+      0,
+      3
+    )}-${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6)}`;
+    return formattedPhoneNumber;
+  }
+
+  const columns: GridColDef[] = [
+    {
+      field: "name",
+      headerAlign: "center",
+      align: "left",
+      headerName: "ชื่อผู้เเจ้ง",
+      headerClassName: "text-[#0f8d67]",
+      width: 200,
+      renderCell: (params) => {
+        return (
+          <div className="flex items-center ml-2">
+            <div className="bg-[#00DC82] rounded-lg p-2 text-white">
+              <FiUser />
+            </div>
+            <p className="pl-4 text-sm">{params.row.name}</p>
+          </div>
+        );
+      },
+    },
+    {
+      field: "phone",
+      headerAlign: "center",
+      align: "center",
+      headerName: "เบอร์โทร",
+      headerClassName: "text-[#0f8d67]",
+      width: 200,
+    },
+    {
+      field: "building",
+      headerAlign: "center",
+      align: "center",
+      headerName: "อาคาร",
+      headerClassName: "text-[#0f8d67]",
+      width: 150,
+    },
+
+    {
+      field: "type",
+      headerAlign: "center",
+      align: "center",
+      headerName: "วันที่เเจ้ง",
+      headerClassName: "text-[#0f8d67]",
+      width: 200,
+    },
+    {
+      field: "createdAt",
+      headerAlign: "center",
+      align: "center",
+      headerName: "วันที่เเจ้ง",
+      headerClassName: "text-[#0f8d67]",
+      width: 200,
+    },
+    {
+      field: "ดูรายละเอียด",
+      width: 250,
+      headerAlign: "center",
+      headerClassName: "text-[#0f8d67]",
+      align: "center",
+      renderCell: (params) => {
+        return (
+          <Link
+            href={`/completed/${params.row._id}`}
+            className=" w-36 bg-white border-2 border-[#dc8000] text-[#dc8000] hover:bg-[#dc8000] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer py-1 rounded-lg flex gap-1 justify-between px-4 items-center"
+          >
+            <span>ดูรายละเอียด</span>
+            <BiEdit className=" text-lg" />
+          </Link>
+        );
+      },
+      sortable: false,
+    },
+  ];
+
+  const rows: GridRowsProp = [
+    ...dataTaskComplete.map((item, index) => {
+      return {
+        _id: item._id,
+        name: item.name,
+        phone: formatPhoneNumber(item.phone),
+        type: item.type,
+        building: item.building,
+        createdAt: dayjs(item.createdAt).format("DD MMMM BBBB"),
+      };
+    }),
+  ];
   return (
     <>
       <div className="bg-white min-h-screen p-4">
@@ -30,8 +128,31 @@ function CompletedPage({}: Props) {
             หน้ายืนยันการเเจ้งปัญหา
           </div>
           <div className="w-full m-auto p-4 border rounded-lg bg-white overflow-y-auto">
-            <div className="py-2"></div>
-            <div className="my-3 p-2 grid grid-cols-2 md:grid-cols-6 items-center justify-between">
+            {isLoading ? (
+              <TableLoading />
+            ) : (
+              <div className=" h-[400px] pt-3">
+                <DataGrid
+                  components={{ NoRowsOverlay }}
+                  rows={rows}
+                  getRowId={(row: any) => row._id}
+                  columns={columns}
+                  pageSizeOptions={[5, 10]}
+                  initialState={{
+                    pagination: {
+                      paginationModel: { page: 0, pageSize: 5 },
+                    },
+                  }}
+                  disableColumnFilter
+                  disableColumnMenu
+                  disableVirtualization
+                  disableRowSelectionOnClick
+                  disableColumnSelector
+                  disableDensitySelector
+                />
+              </div>
+            )}
+            {/* <div className="my-3 p-2 grid grid-cols-2 md:grid-cols-6 items-center justify-between">
               <span>ชื่อผู้เเจ้ง</span>
               <span className="sm:text-left text-right">อาคาร</span>
               <span className="hidden md:grid">วันที่เเจ้ง</span>
@@ -72,7 +193,7 @@ function CompletedPage({}: Props) {
                     </div>
                   </li>
                 ))}
-            </ul>
+            </ul> */}
           </div>
         </div>
       </div>

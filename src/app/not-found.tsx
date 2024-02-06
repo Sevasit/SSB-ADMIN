@@ -8,8 +8,8 @@ const NotFound = (props: Props) => {
   return (
     <div className=" text-center pt-[5%] flex flex-col gap-5 items-center">
       <Image
-        width={400}
-        height={400}
+        width={350}
+        height={350}
         priority={true}
         src={notfoundlogo}
         alt="notfoundlogo"

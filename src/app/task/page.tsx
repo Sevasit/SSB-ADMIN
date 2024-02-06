@@ -1,13 +1,107 @@
 "use client";
 import Link from "next/link";
 import React from "react";
-import { MdOutlineAddBox } from "react-icons/md";
-import noContent from "../../../public/No-data-amico.png";
-import Image from "next/image";
+import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid";
+import NoRowsOverlay from "../components/NoRows";
+import { FiUser } from "react-icons/fi";
 
 type Props = {};
 
 function Tasks({}: Props) {
+  const columns: GridColDef[] = [
+    {
+      field: "typeName",
+      headerAlign: "center",
+      align: "left",
+      headerName: "ชื่อผู้เเจ้ง",
+      headerClassName: "text-[#0f8d67]",
+      width: 250,
+      renderCell: (params) => {
+        return (
+          <div className="flex items-center ml-2">
+            <div className="bg-[#00DC82] rounded-lg p-2 text-white">
+              <FiUser />
+            </div>
+            <p className="pl-4 text-sm">{params.row.typeName}</p>
+          </div>
+        );
+      },
+    },
+    {
+      field: "typeCode",
+      headerAlign: "center",
+      align: "center",
+      headerName: "อาคาร",
+      headerClassName: "text-[#0f8d67]",
+      width: 200,
+    },
+    {
+      field: "createdAt",
+      headerAlign: "center",
+      align: "center",
+      headerName: "วันที่เเจ้ง",
+      headerClassName: "text-[#0f8d67]",
+      width: 200,
+    },
+    {
+      field: "updatedAt",
+      headerAlign: "center",
+      align: "center",
+      headerName: "ประเภท",
+      headerClassName: "text-[#0f8d67]",
+      width: 200,
+    },
+    // {
+    //   field: "เเก้ไข",
+    //   width: 250,
+    //   headerAlign: "center",
+    //   headerClassName: "text-[#0f8d67]",
+    //   align: "center",
+    //   renderCell: (params) => {
+    //     return (
+    //       <div
+    //         onClick={() => handleClickOpenEdit(params.row._id)}
+    //         className=" w-24 bg-white border-2 border-[#dc8000] text-[#dc8000] hover:bg-[#dc8000] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer py-1 rounded-lg flex gap-1 justify-between px-4 items-center"
+    //       >
+    //         <span>เเก้ไข</span>
+    //         <BiEdit className=" text-lg" />
+    //       </div>
+    //     );
+    //   },
+    //   sortable: false,
+    // },
+    // {
+    //   field: "ลบ",
+    //   width: 150,
+    //   headerAlign: "center",
+    //   headerClassName: "text-[#0f8d67]",
+    //   align: "center",
+    //   renderCell: (params) => {
+    //     return (
+    //       <div
+    //         onClick={() => handleClickOpen(params.row._id)}
+    //         className=" w-24 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer py-1 rounded-lg flex gap-1 justify-between px-4 items-center"
+    //       >
+    //         <span>ลบ</span>
+    //         <RiDeleteBin6Line className=" text-lg" />
+    //       </div>
+    //     );
+    //   },
+    //   sortable: false,
+    // },
+  ];
+
+  const rows: GridRowsProp = [
+    // ...dataTypes.map((item, index) => {
+    //   return {
+    //     _id: item._id,
+    //     typeName: item.typeName,
+    //     typeCode: item.typeCode,
+    //     createdAt: dayjs(item.createdAt).format("DD MMMM BBBB"),
+    //     updatedAt: dayjs(item.updatedAt).format("DD MMMM BBBB"),
+    //   };
+    // }),
+  ];
   return (
     <>
       <div className="bg-white min-h-screen p-4">
@@ -16,71 +110,26 @@ function Tasks({}: Props) {
             หน้าจัดการปัญหา
           </div>
           <div className="w-full m-auto p-4 border rounded-lg bg-white overflow-y-auto">
-            <div className="my-3 p-2 grid grid-cols-2 md:grid-cols-6 items-center justify-between">
-              <span>ชื่อผู้เเจ้ง</span>
-              <span className="sm:text-left text-right">อาคาร</span>
-              <span className="hidden md:grid">วันที่เเจ้ง</span>
-              <span className="hidden sm:grid">ประเภท</span>
+            <div className=" h-[400px] pt-3">
+              <DataGrid
+                components={{ NoRowsOverlay }}
+                rows={rows}
+                getRowId={(row: any) => row._id}
+                columns={columns}
+                pageSizeOptions={[5, 10]}
+                initialState={{
+                  pagination: {
+                    paginationModel: { page: 0, pageSize: 5 },
+                  },
+                }}
+                disableColumnFilter
+                disableColumnMenu
+                disableVirtualization
+                disableRowSelectionOnClick
+                disableColumnSelector
+                disableDensitySelector
+              />
             </div>
-            <div className="flex rounded-md justify-center items-center h-[350px]">
-              <div>
-                <Image
-                  priority
-                  src={noContent}
-                  alt="No data"
-                  width={300}
-                  height={300}
-                />
-                <p className="text-center text-xl font-semibold">ไม่มีข้อมูล</p>
-              </div>
-            </div>
-            {/* <ul>
-              {!isLoading &&
-                !isError &&
-                dataUsers &&
-                dataUsers.map((item, id) => (
-                  <li
-                    key={item._id}
-                    className="bg-gray-50 hover:bg-gray-100 rounded-lg my-3 p-2 grid md:grid-cols-6 sm:grid-cols-3 grid-cols-2 items-center justify-between"
-                  >
-                    <div className="flex items-center">
-                      <div className="bg-[#00DC82] rounded-lg p-2 text-white">
-                        <FiUser />
-                      </div>
-                      <p className="pl-4 text-sm">
-                        {item.firstName + " " + item.lastName}
-                      </p>
-                    </div>
-                    <p className="sm:text-left text-right text-sm">
-                      {item.email}
-                    </p>
-                    <p className="hidden md:flex text-sm">
-                      {dayjs(item.updatedAt).format("DD MMMM BBBB")}
-                    </p>
-                    <div className="sm:flex text-sm hidden justify-between items-center">
-                      <p>{item.role}</p>
-                    </div>
-                    <div>
-                      <div
-                        onClick={() => router.push(`/employee/${item._id}`)}
-                        className=" w-24 bg-white border-2 border-[#dc8000] text-[#dc8000] hover:bg-[#dc8000] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer py-1 rounded-lg flex gap-1 justify-between px-4 items-center"
-                      >
-                        <span>เเก้ไข</span>
-                        <BiEdit className=" text-lg" />
-                      </div>
-                    </div>
-                    <div>
-                      <div
-                        onClick={() => handleClickOpen(item._id)}
-                        className=" w-24 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer py-1 rounded-lg flex gap-1 justify-between px-4 items-center"
-                      >
-                        <span>ลบ</span>
-                        <RiDeleteBin6Line className=" text-lg" />
-                      </div>
-                    </div>
-                  </li>
-                ))}
-            </ul> */}
           </div>
         </div>
       </div>
