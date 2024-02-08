@@ -30,16 +30,9 @@ type FormData = {
 };
 
 const CreateEmp = (props: Props) => {
+  const router = useRouter();
   const { data: session, status } = useSession();
   const user = session?.user;
-  const email = user?.email;
-  console.log("user", user);
-  console.log("session client", session);
-
-  //  if (status === "unauthenticated") {
-  //     signIn();
-  //   }
-  const router = useRouter();
 
   const {
     register,
@@ -71,11 +64,9 @@ const CreateEmp = (props: Props) => {
       password: data.password,
       role: data.role,
     };
-    console.log(data);
     const res = mutateAsynccreate(payload);
     res
       .then((data) => {
-        console.log(data);
         if (data.message === "Created user successfully") {
           toast.success("เพิ่มข้อมูลผู้ใช้งานสำเร็จ");
           router.push("/employee");
@@ -332,13 +323,13 @@ const CreateEmp = (props: Props) => {
                 </FormControl>
                 <div className="flex w-[550px] gap-10 justify-end">
                   <Link href="/employee">
-                    <div className=" w-20 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-between px-4 items-center">
+                    <div className=" w-20 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center">
                       <span>ยกเลิก</span>
                     </div>
                   </Link>
                   <button
                     type="submit"
-                    className=" w-20 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#00DC82] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-between px-4 items-center"
+                    className=" w-20 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#00DC82] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center"
                   >
                     <span>ยืนยัน</span>
                   </button>

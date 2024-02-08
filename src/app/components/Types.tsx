@@ -7,12 +7,9 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
-  DialogTitle,
   FormControl,
   TextField,
 } from "@mui/material";
-import { useRouter } from "next/navigation";
 import dayjs from "dayjs";
 import toast, { Toaster } from "react-hot-toast";
 import "dayjs/locale/th";
@@ -20,7 +17,6 @@ import buddhistEra from "dayjs/plugin/buddhistEra";
 import useGetType from "../../../hooks/type/useGetType";
 import { RxCube } from "react-icons/rx";
 import useDeleteTypes from "../../../hooks/type/useDeleteType";
-import Link from "next/link";
 import { useForm } from "react-hook-form";
 import useCreateType from "../../../hooks/type/useCreateType";
 import useEditType from "../../../hooks/type/useEditType";
@@ -82,7 +78,6 @@ const Types = (props: Props) => {
       const res = mutateAsyncTypeById(idEdit);
       res
         .then((data) => {
-          console.log(data);
           resetEdit({
             typeName: data?.typeName,
             typeCode: data?.typeCode,
@@ -113,11 +108,9 @@ const Types = (props: Props) => {
       typeName: data.typeName,
       typeCode: data.typeCode,
     };
-    console.log(payload);
     const res = mutateAsyncTypeCreate(payload);
     res
       .then((data) => {
-        console.log(data);
         if (data.message === "Created type successfully") {
           toast.success("เพิ่มข้อมูลประเภทงานสำเร็จ");
           setOpenCreate(false);
@@ -158,11 +151,9 @@ const Types = (props: Props) => {
       typeName: data.typeName,
       typeCode: data.typeCode,
     };
-    console.log(payload);
     const res = mutateAsyncTypeEdit(payload);
     res
       .then((data) => {
-        console.log(data);
         if (data.message === "Updated type successfully") {
           toast.success("เเก้ไขข้อมูลประเภทงานสำเร็จ");
           setOpenEdit(false);
@@ -370,53 +361,6 @@ const Types = (props: Props) => {
                 />
               </div>
             )}
-            {/* <div className="my-3 p-2 grid grid-cols-2 md:grid-cols-5 items-center justify-between">
-              <span>ชื่อประเภท</span>
-              <span className="sm:text-left text-right">Code ประเภท</span>
-              <span className="hidden md:grid">วันที่สร้าง</span>
-            </div>
-            <ul>
-              {!getISLoading &&
-                !getISError &&
-                dataTypes &&
-                dataTypes.map((item, id) => (
-                  <li
-                    key={item._id}
-                    className="bg-gray-50 hover:bg-gray-100 rounded-lg my-3 p-2 grid md:grid-cols-5 sm:grid-cols-3 grid-cols-2 items-center justify-between"
-                  >
-                    <div className="flex items-center">
-                      <div className="bg-[#00DC82] rounded-lg p-2 text-white">
-                        <RxCube />
-                      </div>
-                      <p className="pl-4 text-sm">{item.typeName}</p>
-                    </div>
-                    <p className="sm:text-left text-right text-sm">
-                      {item.typeCode}
-                    </p>
-                    <p className="hidden md:flex text-sm">
-                      {dayjs(item.createdAt).format("DD MMMM BBBB")}
-                    </p>
-                    <div>
-                      <div
-                        onClick={() => handleClickOpenEdit(item._id)}
-                        className=" w-24 bg-white border-2 border-[#dc8000] text-[#dc8000] hover:bg-[#dc8000] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer py-1 rounded-lg flex gap-1 justify-between px-4 items-center"
-                      >
-                        <span>เเก้ไข</span>
-                        <BiEdit className=" text-lg" />
-                      </div>
-                    </div>
-                    <div>
-                      <div
-                        onClick={() => handleClickOpen(item._id)}
-                        className=" w-24 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer py-1 rounded-lg flex gap-1 justify-between px-4 items-center"
-                      >
-                        <span>ลบ</span>
-                        <RiDeleteBin6Line className=" text-lg" />
-                      </div>
-                    </div>
-                  </li>
-                ))}
-            </ul> */}
           </div>
         </div>
       </div>

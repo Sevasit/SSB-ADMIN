@@ -1,5 +1,4 @@
 "use client";
-import Container from "@mui/material/Container";
 import Image from "next/image";
 import React from "react";
 import toast, { Toaster } from "react-hot-toast";
@@ -22,7 +21,6 @@ const ApproveDetail = (props: Props) => {
   const [open, setOpen] = React.useState(false);
   const { taskId } = useParams();
   const { data, isLoading, isError } = useGetTaskPendingById(taskId as string);
-  console.log(data);
 
   const router = useRouter();
 
@@ -53,7 +51,6 @@ const ApproveDetail = (props: Props) => {
     const res = mutateAsyncApprove(taskId as string);
     res
       .then((data) => {
-        console.log(data);
         if (data.message === "Approve task successfully") {
           toast.success("อนุมัติปัญหาสำเร็จ");
           router.push("/approve");

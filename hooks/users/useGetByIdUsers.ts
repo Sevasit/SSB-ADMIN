@@ -5,7 +5,7 @@ import { getUsersById } from "../QueriesKey";
 
 const useGetByIdUsers = (id: string) => {
   return useQuery<IUsersById, { message: string }>(
-    [getUsersById],
+    [getUsersById, id],
     async () => await getfindByIdUsersApi(id),
     {
       // reset query when id changes

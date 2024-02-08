@@ -8,7 +8,6 @@ import Header from "./components/Header";
 import { NextAuthProvider } from "./providers";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../utils/authOptions";
-import Head from "next/head";
 import FontPrompt from "../../utils/customFonts";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -24,7 +23,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const session = await getServerSession(authOptions);
-  console.log("session layout", session?.userData.role);
+  // console.log("session layout", session?.userData.role);
   return (
     <NextAuthProvider>
       <html lang="en">

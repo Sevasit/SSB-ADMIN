@@ -5,6 +5,9 @@ import React from "react";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import LogoRms from "../../../public/RMS.png";
 import Image from "next/image";
+import { styled } from "@mui/material/styles";
+import Badge from "@mui/material/Badge";
+import { Avatar } from "@mui/material";
 
 const Header = () => {
   const router = useRouter();
@@ -17,6 +20,35 @@ const Header = () => {
     // }
   };
 
+  const StyledBadge = styled(Badge)(({ theme }) => ({
+    "& .MuiBadge-badge": {
+      backgroundColor: "#44b700",
+      color: "#44b700",
+      boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+      "&::after": {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "100%",
+        borderRadius: "50%",
+        animation: "ripple 1.2s infinite ease-in-out",
+        border: "1px solid currentColor",
+        content: '""',
+      },
+    },
+    "@keyframes ripple": {
+      "0%": {
+        transform: "scale(.8)",
+        opacity: 1,
+      },
+      "100%": {
+        transform: "scale(2.4)",
+        opacity: 0,
+      },
+    },
+  }));
+
   return (
     <>
       <div className="flex fixed w-full z-50  bg-gradient-to-r from-[#00DC82] to-[#97ffe0] py-5 justify-between items-center px-4 pt-4">
@@ -25,8 +57,22 @@ const Header = () => {
         </div>
         <div className=" flex gap-3 items-center">
           <div>
-            {session &&
-              session?.userData.firstName + " " + session?.userData.lastName}
+            {session && (
+              <div className="flex gap-3 justify-center items-center">
+                <StyledBadge
+                  overlap="circular"
+                  anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                  variant="dot"
+                >
+                  <Avatar
+                    className=" shadow-lg border-2 border-black"
+                    alt="User logo"
+                    src="/user.png"
+                  />
+                </StyledBadge>
+                {session?.userData.firstName + " " + session?.userData.lastName}
+              </div>
+            )}
           </div>
           <div
             onClick={() => handleSignOut()}

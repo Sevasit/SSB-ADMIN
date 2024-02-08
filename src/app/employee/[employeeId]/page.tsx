@@ -15,7 +15,7 @@ import useGetType from "../../../../hooks/type/useGetType";
 import toast, { Toaster } from "react-hot-toast";
 import useGetByIdUsers from "../../../../hooks/users/useGetByIdUsers";
 import useEditUsers from "../../../../hooks/users/useEditUsers";
-import { signIn, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 type FormData = {
   name: string;
@@ -30,14 +30,7 @@ type FormData = {
 
 const EditEmp = () => {
   const { data: session, status } = useSession();
-  const user = session?.user;
-  const email = user?.email;
-  console.log("user", user);
-  console.log("session client", session);
-
-  // if (status === "unauthenticated") {
-  //   signIn();
-  // }
+  const roleUser = session?.userData.role;
 
   const router = useRouter();
   const { employeeId } = useParams();
@@ -59,10 +52,6 @@ const EditEmp = () => {
   const watchFieldsPassword = watch(["password", "newPassword"]);
 
   React.useEffect(() => {
-    //if error fetch data with useGetByIdUsers is error navigate to employee page
-    if (GetIdisError) {
-      router.push("/employee");
-    }
     if (!GetIdisLoading && !GetIdisError && dataGetId!!) {
       reset({
         name: dataGetId.firstName,
@@ -96,11 +85,9 @@ const EditEmp = () => {
       newPassword: data.newPassword,
       role: data.role,
     };
-    console.log(data);
     const res = mutateAsyncEdit(payload);
     res
       .then((data) => {
-        console.log(data);
         if (data.message === "Updated user successfully") {
           toast.success("อัพเดตข้อมูลผู้ใช้งานสำเร็จ");
           router.push("/employee");

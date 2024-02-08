@@ -7,14 +7,8 @@ type Props = {};
 
 const Type = (props: Props) => {
   const { data: session, status } = useSession();
-  const user = session?.user;
-  const email = user?.email;
-  console.log("user", user);
-  console.log("session client", session);
+  const userRole = session?.userData.role;
 
-  // if (status === "unauthenticated") {
-  //   signIn();
-  // }
   return (
     <div className="p-4">
       <Types />
