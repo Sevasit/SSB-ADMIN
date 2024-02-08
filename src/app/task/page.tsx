@@ -4,34 +4,77 @@ import React from "react";
 import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid";
 import NoRowsOverlay from "../components/NoRows";
 import { FiUser } from "react-icons/fi";
+import useGetTaskByAdmin from "../../../hooks/task/useGetTaskByAdmin";
+import { useSession } from "next-auth/react";
+import { BiEdit } from "react-icons/bi";
+import dayjs from "dayjs";
+import "dayjs/locale/th";
+import buddhistEra from "dayjs/plugin/buddhistEra";
+import { Toaster } from "react-hot-toast";
+import TableLoading from "../components/TableLoading";
+
+dayjs.extend(buddhistEra);
+dayjs.locale("th");
 
 type Props = {};
 
 function Tasks({}: Props) {
+  const { data: session, status } = useSession();
+  const {
+    data: dataTaskPending = [],
+    isLoading,
+    isError,
+  } = useGetTaskByAdmin();
+
+  function formatPhoneNumber(phoneNumber: string | undefined) {
+    if (phoneNumber === undefined) return "";
+    const formattedPhoneNumber = `${phoneNumber.slice(
+      0,
+      3
+    )}-${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6)}`;
+    return formattedPhoneNumber;
+  }
+
   const columns: GridColDef[] = [
     {
-      field: "typeName",
+      field: "name",
       headerAlign: "center",
       align: "left",
       headerName: "ชื่อผู้เเจ้ง",
       headerClassName: "text-[#0f8d67]",
-      width: 250,
+      width: 200,
       renderCell: (params) => {
         return (
           <div className="flex items-center ml-2">
             <div className="bg-[#00DC82] rounded-lg p-2 text-white">
               <FiUser />
             </div>
-            <p className="pl-4 text-sm">{params.row.typeName}</p>
+            <p className="pl-4 text-sm">{params.row.name}</p>
           </div>
         );
       },
     },
     {
-      field: "typeCode",
+      field: "phone",
+      headerAlign: "center",
+      align: "center",
+      headerName: "เบอร์โทร",
+      headerClassName: "text-[#0f8d67]",
+      width: 200,
+    },
+    {
+      field: "building",
       headerAlign: "center",
       align: "center",
       headerName: "อาคาร",
+      headerClassName: "text-[#0f8d67]",
+      width: 150,
+    },
+    {
+      field: "type",
+      headerAlign: "center",
+      align: "center",
+      headerName: "ประเภทปัญหา",
       headerClassName: "text-[#0f8d67]",
       width: 200,
     },
@@ -44,63 +87,37 @@ function Tasks({}: Props) {
       width: 200,
     },
     {
-      field: "updatedAt",
+      field: "ดูรายละเอียด",
+      width: 250,
       headerAlign: "center",
+      headerClassName: "text-[#0f8d67] hidden",
       align: "center",
-      headerName: "ประเภท",
-      headerClassName: "text-[#0f8d67]",
-      width: 200,
+      renderCell: (params) => {
+        return (
+          <Link
+            href={`/task/${params.row._id}`}
+            className=" w-36 bg-white border-2 border-[#dc8000] text-[#dc8000] hover:bg-[#dc8000] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer py-1 rounded-lg flex gap-1 justify-between px-4 items-center"
+          >
+            <span>ดูรายละเอียด</span>
+            <BiEdit className=" text-lg" />
+          </Link>
+        );
+      },
+      sortable: false,
     },
-    // {
-    //   field: "เเก้ไข",
-    //   width: 250,
-    //   headerAlign: "center",
-    //   headerClassName: "text-[#0f8d67]",
-    //   align: "center",
-    //   renderCell: (params) => {
-    //     return (
-    //       <div
-    //         onClick={() => handleClickOpenEdit(params.row._id)}
-    //         className=" w-24 bg-white border-2 border-[#dc8000] text-[#dc8000] hover:bg-[#dc8000] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer py-1 rounded-lg flex gap-1 justify-between px-4 items-center"
-    //       >
-    //         <span>เเก้ไข</span>
-    //         <BiEdit className=" text-lg" />
-    //       </div>
-    //     );
-    //   },
-    //   sortable: false,
-    // },
-    // {
-    //   field: "ลบ",
-    //   width: 150,
-    //   headerAlign: "center",
-    //   headerClassName: "text-[#0f8d67]",
-    //   align: "center",
-    //   renderCell: (params) => {
-    //     return (
-    //       <div
-    //         onClick={() => handleClickOpen(params.row._id)}
-    //         className=" w-24 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer py-1 rounded-lg flex gap-1 justify-between px-4 items-center"
-    //       >
-    //         <span>ลบ</span>
-    //         <RiDeleteBin6Line className=" text-lg" />
-    //       </div>
-    //     );
-    //   },
-    //   sortable: false,
-    // },
   ];
 
   const rows: GridRowsProp = [
-    // ...dataTypes.map((item, index) => {
-    //   return {
-    //     _id: item._id,
-    //     typeName: item.typeName,
-    //     typeCode: item.typeCode,
-    //     createdAt: dayjs(item.createdAt).format("DD MMMM BBBB"),
-    //     updatedAt: dayjs(item.updatedAt).format("DD MMMM BBBB"),
-    //   };
-    // }),
+    ...dataTaskPending.map((item, index) => {
+      return {
+        _id: item._id,
+        name: item.name,
+        phone: formatPhoneNumber(item.phone),
+        type: item.type,
+        building: item.building,
+        createdAt: dayjs(item.createdAt).format("DD MMMM BBBB"),
+      };
+    }),
   ];
   return (
     <>
@@ -110,51 +127,34 @@ function Tasks({}: Props) {
             หน้าจัดการปัญหา
           </div>
           <div className="w-full m-auto p-4 border rounded-lg bg-white overflow-y-auto">
-            <div className=" h-[400px] pt-3">
-              <DataGrid
-                components={{ NoRowsOverlay }}
-                rows={rows}
-                getRowId={(row: any) => row._id}
-                columns={columns}
-                pageSizeOptions={[5, 10]}
-                initialState={{
-                  pagination: {
-                    paginationModel: { page: 0, pageSize: 5 },
-                  },
-                }}
-                disableColumnFilter
-                disableColumnMenu
-                disableVirtualization
-                disableRowSelectionOnClick
-                disableColumnSelector
-                disableDensitySelector
-              />
-            </div>
+            {isLoading ? (
+              <TableLoading />
+            ) : (
+              <div className=" h-[400px] pt-3">
+                <DataGrid
+                  components={{ NoRowsOverlay }}
+                  rows={rows}
+                  getRowId={(row: any) => row._id}
+                  columns={columns}
+                  pageSizeOptions={[5, 10]}
+                  initialState={{
+                    pagination: {
+                      paginationModel: { page: 0, pageSize: 5 },
+                    },
+                  }}
+                  disableColumnFilter
+                  disableColumnMenu
+                  disableVirtualization
+                  disableRowSelectionOnClick
+                  disableColumnSelector
+                  disableDensitySelector
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>
-      {/* <Dialog open={open} onClose={handleClose}>
-        <div className="p-6">
-          <div className=" m-3 text-xl">
-            {"คุณต้องการที่จะลบข้อมูลผู้ใช้หรือไม่?"}
-          </div>
-          <DialogActions>
-            <div
-              onClick={handleClose}
-              className=" w-24 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-between px-4 items-center"
-            >
-              <span>ยกเลิก</span>
-            </div>
-            <div
-              onClick={handleSubmit}
-              className=" w-24 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#00DC82] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-between px-4 items-center"
-            >
-              <span>ยืนยัน</span>
-            </div>
-          </DialogActions>
-        </div>
-      </Dialog>
-      <Toaster position="bottom-right" /> */}
+      <Toaster position="bottom-right" />
     </>
   );
 }

@@ -6,6 +6,7 @@ import {
   ITaskCountToGraph,
   ITaskCurrent,
   ITaskPending,
+  ITaskReject,
 } from "../../../../types/ITask";
 import AxiosCustom from "../../../../utils/AxiosApi";
 
@@ -13,6 +14,21 @@ export const getFindByIdApi = async (id: string) => {
   try {
     const response = await AxiosCustom.get<ITaskById>(
       `/tasks/findById?id=${id}`
+    );
+    if (response?.data === undefined) {
+      throw "error undefined";
+    }
+    return response?.data;
+  } catch (err) {
+    console.error(err);
+    throw Promise.reject(err);
+  }
+};
+
+export const getFindPendingByAdminApi = async () => {
+  try {
+    const response = await AxiosCustom.get<ITaskPending[]>(
+      `/tasks/findPendingByAdmin`
     );
     if (response?.data === undefined) {
       throw "error undefined";
@@ -86,6 +102,22 @@ export const findTaskCountToGraph = async () => {
   try {
     const response = await AxiosCustom.get<ITaskCountToGraph[]>(
       `/tasks/findTaskCountToGraph`
+    );
+    if (response?.data === undefined) {
+      throw "error undefined";
+    }
+    return response?.data;
+  } catch (err) {
+    console.error(err);
+    throw Promise.reject(err);
+  }
+};
+
+export const rejectTaskApi = async (payload: ITaskReject) => {
+  try {
+    const response = await AxiosCustom.patch<IResponseDefault>(
+      `/tasks/sendTaskReject`,
+      payload
     );
     if (response?.data === undefined) {
       throw "error undefined";

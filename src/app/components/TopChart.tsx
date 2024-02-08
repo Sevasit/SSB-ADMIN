@@ -1,7 +1,5 @@
 "use client ";
-
 import React from "react";
-import useGetTaskCount from "../../../hooks/task/useGetTaskCount";
 import useGetTaskCountToGraph from "../../../hooks/task/useGetTaskCountToGraph";
 
 const TopCard = () => {

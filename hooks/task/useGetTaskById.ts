@@ -5,7 +5,7 @@ import { getTasksPendingById } from "../QueriesKey";
 
 const useGetTaskPendingById = (payload: string) => {
   return useQuery<ITaskById, { message: string }>(
-    [getTasksPendingById],
+    [getTasksPendingById, payload],
     async () => await getFindByIdApi(payload)
   );
 };

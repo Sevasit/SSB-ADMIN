@@ -22,6 +22,11 @@ export interface ITaskById {
   createdAt: Dayjs;
 }
 
+export interface ITaskReject {
+  id: string;
+  annotation: string;
+}
+
 export interface ITaskConfirm {
   id: string;
   processBy: string;

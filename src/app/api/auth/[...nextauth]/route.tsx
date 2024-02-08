@@ -3,6 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 
 import AxiosCustom from "../../../../../utils/AxiosApi";
 import { IUserResponse } from "../../../../../types/IUserResponse";
+import { callback } from "chart.js/helpers";
 
 const handler = NextAuth({
   session: {

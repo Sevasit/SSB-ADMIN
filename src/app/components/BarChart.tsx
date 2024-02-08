@@ -45,6 +45,13 @@ const BarChart = () => {
 
     setChartOptions({
       data: chartData,
+      scales: {
+        y: {
+          ticks: {
+            precision: 0,
+          },
+        },
+      },
       plugins: {
         title: {
           display: true,
