@@ -312,7 +312,7 @@ const Types = (props: Props) => {
   const rows: GridRowsProp = [
     ...dataTypes.map((item, index) => {
       return {
-        _id: item._id,
+        id: item._id,
         typeName: item.typeName,
         typeCode: item.typeCode,
         createdAt: dayjs(item.createdAt).format("DD MMMM BBBB"),
@@ -344,7 +344,6 @@ const Types = (props: Props) => {
                 <DataGrid
                   components={{ NoRowsOverlay }}
                   rows={rows}
-                  getRowId={(row: any) => row._id}
                   columns={columns}
                   pageSizeOptions={[5, 10]}
                   initialState={{

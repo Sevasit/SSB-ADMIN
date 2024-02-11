@@ -146,10 +146,10 @@ const Empolyee = (props: Props) => {
   const rows: GridRowsProp = [
     ...dataUsers.map((item, index) => {
       return {
-        _id: item._id,
+        id: item._id,
         name: item.firstName + " " + item.lastName,
         email: item.email,
-        role: item.role,
+        role: item.role.typeName,
         createdAt: dayjs(item.createdAt).format("DD MMMM BBBB"),
         updatedAt: dayjs(item.updatedAt).format("DD MMMM BBBB"),
       };
@@ -178,7 +178,6 @@ const Empolyee = (props: Props) => {
                 <DataGrid
                   components={{ NoRowsOverlay }}
                   rows={rows}
-                  getRowId={(row: any) => row._id}
                   columns={columns}
                   pageSizeOptions={[5, 10]}
                   initialState={{

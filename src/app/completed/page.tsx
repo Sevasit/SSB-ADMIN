@@ -20,11 +20,12 @@ type Props = {};
 
 function CompletedPage({}: Props) {
   const { data: session, status } = useSession();
+  const roleId = session?.userData.role._id!!;
   const {
     data: dataTaskComplete = [],
     isLoading,
     isError,
-  } = useGetTaskComplete(session?.userData.role!!);
+  } = useGetTaskComplete(roleId);
 
   function formatPhoneNumber(phoneNumber: string | undefined) {
     if (phoneNumber === undefined) return "";
@@ -75,7 +76,7 @@ function CompletedPage({}: Props) {
       field: "type",
       headerAlign: "center",
       align: "center",
-      headerName: "วันที่เเจ้ง",
+      headerName: "ประเภทปัญหา",
       headerClassName: "text-[#0f8d67]",
       width: 200,
     },
@@ -114,8 +115,8 @@ function CompletedPage({}: Props) {
         _id: item._id,
         name: item.name,
         phone: formatPhoneNumber(item.phone),
-        type: item.type,
-        building: item.building,
+        type: item.type.typeName,
+        building: item.building.nameBuilding,
         createdAt: dayjs(item.createdAt).format("DD MMMM BBBB"),
       };
     }),

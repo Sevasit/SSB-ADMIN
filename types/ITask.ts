@@ -4,8 +4,12 @@ export interface ITaskPending {
   _id: string;
   name: string;
   phone: string;
-  type: string;
-  building: string;
+  type: {
+    typeName: string;
+  };
+  building: {
+    nameBuilding: string;
+  };
   createdAt: Dayjs;
 }
 
@@ -14,8 +18,12 @@ export interface ITaskById {
   name: string;
   phone: string;
   remark: string;
-  type: string;
-  building: string;
+  type: {
+    typeName: string;
+  };
+  building: {
+    nameBuilding: string;
+  };
   location: string;
   status: string;
   imageStart: string;
