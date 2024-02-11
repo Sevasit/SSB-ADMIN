@@ -101,7 +101,9 @@ const ApproveDetail = (props: Props) => {
               </div>
               <div>
                 <span className=" font-semibold">ประเภทปัญหา : </span>
-                <span className="text-md text-gray-500">{data?.type}</span>
+                <span className="text-md text-gray-500">
+                  {data?.type.typeName}
+                </span>
               </div>
               <div className="flex flex-col gap-3 w-[300px]">
                 <span className=" font-semibold">รายละเอียดปัญหา : </span>
@@ -111,7 +113,25 @@ const ApproveDetail = (props: Props) => {
               </div>
               <div>
                 <span className=" font-semibold">สถานะ : </span>
-                <span className="text-md text-gray-500">{data?.status}</span>
+                <span
+                  className={`${
+                    data?.status === "pending"
+                      ? " text-xs bg-gray-300 px-1 rounded-md"
+                      : data?.status === "approve"
+                      ? "text-xs px-1 bg-[#dc8000] rounded-md"
+                      : data?.status === "reject"
+                      ? "text-xs px-1 bg-[#b91515] rounded-md"
+                      : "text-xs px-1 bg-[#00DC82] rounded-md"
+                  }`}
+                >
+                  {data?.status === "pending"
+                    ? "รอการยืนยัน"
+                    : data?.status === "approve"
+                    ? "รอดำเนินการให้สำเร็จ"
+                    : data?.status === "reject"
+                    ? "ปัญหาถูกปฏิเสธ"
+                    : "เเก้ปัญหาสำเร็จ"}
+                </span>
               </div>
               <div>
                 <span className=" font-semibold">วันที่เเจ้ง : </span>
@@ -121,7 +141,9 @@ const ApproveDetail = (props: Props) => {
               </div>
               <div>
                 <span className=" font-semibold">อาคาร : </span>
-                <span className="text-md text-gray-500">{data?.building}</span>
+                <span className="text-md text-gray-500">
+                  {data?.building.nameBuilding}
+                </span>
               </div>
               <div className="flex flex-col gap-3 w-[300px]">
                 <span className=" font-semibold">รายละเอียดสถานที่ : </span>
@@ -133,12 +155,12 @@ const ApproveDetail = (props: Props) => {
           </div>
           <div className="flex gap-10 items-start md:justify-end justify-center md:items-center mt-5">
             <Link href="/approve">
-              <div className=" w-20 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-between px-4 items-center">
+              <div className=" w-20 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center">
                 <span>ยกเลิก</span>
               </div>
             </Link>
             <div
-              className=" w-auto bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#00DC82] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-between px-4 items-center"
+              className=" w-auto bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#00DC82] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center"
               onClick={handleClickOpen}
             >
               <span>อนุมัติปัญหา</span>
@@ -153,13 +175,13 @@ const ApproveDetail = (props: Props) => {
             <DialogActions className="flex justify-around items-center">
               <div
                 onClick={handleClose}
-                className=" w-24 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-between px-4 items-center"
+                className=" w-24 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center"
               >
                 <span>ยกเลิก</span>
               </div>
               <div
                 onClick={handleSubmit}
-                className=" w-24 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#00DC82] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-between px-4 items-center"
+                className=" w-24 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#00DC82] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center"
               >
                 <span>ยืนยัน</span>
               </div>

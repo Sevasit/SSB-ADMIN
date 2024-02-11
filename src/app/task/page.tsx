@@ -95,7 +95,7 @@ function Tasks({}: Props) {
       renderCell: (params) => {
         return (
           <Link
-            href={`/task/${params.row._id}`}
+            href={`/task/${params.row.id}`}
             className=" w-36 bg-white border-2 border-[#dc8000] text-[#dc8000] hover:bg-[#dc8000] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer py-1 rounded-lg flex gap-1 justify-between px-4 items-center"
           >
             <span>ดูรายละเอียด</span>
@@ -110,11 +110,11 @@ function Tasks({}: Props) {
   const rows: GridRowsProp = [
     ...dataTaskPending.map((item, index) => {
       return {
-        _id: item._id,
+        id: item._id,
         name: item.name,
         phone: formatPhoneNumber(item.phone),
-        type: item.type,
-        building: item.building,
+        type: item.type.typeName,
+        building: item.building.nameBuilding,
         createdAt: dayjs(item.createdAt).format("DD MMMM BBBB"),
       };
     }),
@@ -134,7 +134,6 @@ function Tasks({}: Props) {
                 <DataGrid
                   components={{ NoRowsOverlay }}
                   rows={rows}
-                  getRowId={(row: any) => row._id}
                   columns={columns}
                   pageSizeOptions={[5, 10]}
                   initialState={{

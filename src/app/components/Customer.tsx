@@ -112,7 +112,7 @@ const Empolyee = (props: Props) => {
       renderCell: (params) => {
         return (
           <div
-            onClick={() => router.push(`/employee/${params.row._id}`)}
+            onClick={() => router.push(`/employee/${params.row.id}`)}
             className=" w-24 bg-white border-2 border-[#dc8000] text-[#dc8000] hover:bg-[#dc8000] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer py-1 rounded-lg flex gap-1 justify-between px-4 items-center"
           >
             <span>เเก้ไข</span>
@@ -131,7 +131,7 @@ const Empolyee = (props: Props) => {
       renderCell: (params) => {
         return (
           <div
-            onClick={() => handleClickOpen(params.row._id)}
+            onClick={() => handleClickOpen(params.row.id)}
             className=" w-24 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer py-1 rounded-lg flex gap-1 justify-between px-4 items-center"
           >
             <span>ลบ</span>
@@ -146,10 +146,10 @@ const Empolyee = (props: Props) => {
   const rows: GridRowsProp = [
     ...dataUsers.map((item, index) => {
       return {
-        _id: item._id,
+        id: item._id,
         name: item.firstName + " " + item.lastName,
         email: item.email,
-        role: item.role,
+        role: item.role.typeName,
         createdAt: dayjs(item.createdAt).format("DD MMMM BBBB"),
         updatedAt: dayjs(item.updatedAt).format("DD MMMM BBBB"),
       };
@@ -178,7 +178,6 @@ const Empolyee = (props: Props) => {
                 <DataGrid
                   components={{ NoRowsOverlay }}
                   rows={rows}
-                  getRowId={(row: any) => row._id}
                   columns={columns}
                   pageSizeOptions={[5, 10]}
                   initialState={{

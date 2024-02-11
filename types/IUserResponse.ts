@@ -1,10 +1,13 @@
 import { Dayjs } from "dayjs";
 export interface IUserResponse {
-  id: string;
+  _id: string;
   email: string;
   firstName: string;
   lastName: string;
-  role: string;
+  role: {
+    _id: string;
+    typeName: string;
+  };
 }
 
 export interface IUsers {
@@ -12,7 +15,9 @@ export interface IUsers {
   firstName: string;
   lastName: string;
   email: string;
-  role: string;
+  role: {
+    typeName: string;
+  };
   createdAt: Dayjs;
   updatedAt: Dayjs;
 }

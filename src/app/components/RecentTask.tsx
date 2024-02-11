@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { RiBox3Line } from "react-icons/ri";
 import dayjs from "dayjs";
 import "dayjs/locale/th";
@@ -15,13 +15,15 @@ interface Props {}
 
 const RecentTask = (props: Props) => {
   const { data: session, status } = useSession();
+  const role = session?.userData.role.typeName!!;
 
-  const role = session?.userData.role!!;
+  const userId = session?.userData?.role?._id!!;
+
   const {
     data: dataTaskCurrent = [],
     isLoading,
     isError,
-  } = useGetTaskCurrent(role!!);
+  } = useGetTaskCurrent(userId);
 
   function formatPhoneNumber(phoneNumber: string | undefined) {
     if (phoneNumber === undefined) return "";
@@ -41,7 +43,7 @@ const RecentTask = (props: Props) => {
           <h1 className=" text-lg font-semibold">ประเภท : {role}</h1>
         )}
       </div>
-      {dataTaskCurrent.length !== 0 ? (
+      {!isLoading ? (
         <ul>
           {dataTaskCurrent.map((item, id) => (
             <li

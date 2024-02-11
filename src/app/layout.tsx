@@ -23,7 +23,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const session = await getServerSession(authOptions);
-  // console.log("session layout", session?.userData.role);
+  console.log("session layout", session?.userData);
   return (
     <NextAuthProvider>
       <html lang="en">
@@ -35,7 +35,7 @@ export default async function RootLayout({
             {session ? (
               <>
                 <Header />
-                {session?.userData.role === "admin" ? (
+                {session?.userData.role.typeName === "admin" ? (
                   <Slider>{children}</Slider>
                 ) : (
                   <SliderEmp>{children}</SliderEmp>

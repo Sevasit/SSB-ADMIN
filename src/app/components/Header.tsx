@@ -3,7 +3,7 @@ import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React from "react";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
-import LogoRms from "../../../public/RMS.png";
+import LogoRms from "../../../public/SSB.png";
 import Image from "next/image";
 import { styled } from "@mui/material/styles";
 import Badge from "@mui/material/Badge";
@@ -65,9 +65,9 @@ const Header = () => {
                   variant="dot"
                 >
                   <Avatar
-                    className=" shadow-lg border-2 border-black"
+                    className=" shadow-lg border-2 border-white"
                     alt="User logo"
-                    src="/user.png"
+                    src="/userAvartar.png"
                   />
                 </StyledBadge>
                 {session?.userData.firstName + " " + session?.userData.lastName}

@@ -20,11 +20,12 @@ type Props = {};
 
 function ApprovePage({}: Props) {
   const { data: session, status } = useSession();
+  const roleId = session?.userData.role._id!!;
   const {
     data: dataTaskPending = [],
     isLoading,
     isError,
-  } = useGetTaskPending(session?.userData.role!!);
+  } = useGetTaskPending(roleId);
 
   function formatPhoneNumber(phoneNumber: string | undefined) {
     if (phoneNumber === undefined) return "";
@@ -75,7 +76,7 @@ function ApprovePage({}: Props) {
       field: "type",
       headerAlign: "center",
       align: "center",
-      headerName: "วันที่เเจ้ง",
+      headerName: "ประเภทปัญหา",
       headerClassName: "text-[#0f8d67]",
       width: 200,
     },
@@ -96,7 +97,7 @@ function ApprovePage({}: Props) {
       renderCell: (params) => {
         return (
           <Link
-            href={`/approve/${params.row._id}`}
+            href={`/approve/${params.row.id}`}
             className=" w-36 bg-white border-2 border-[#dc8000] text-[#dc8000] hover:bg-[#dc8000] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer py-1 rounded-lg flex gap-1 justify-between px-4 items-center"
           >
             <span>ดูรายละเอียด</span>
@@ -111,11 +112,11 @@ function ApprovePage({}: Props) {
   const rows: GridRowsProp = [
     ...dataTaskPending.map((item, index) => {
       return {
-        _id: item._id,
+        id: item._id,
         name: item.name,
         phone: formatPhoneNumber(item.phone),
-        type: item.type,
-        building: item.building,
+        type: item.type.typeName,
+        building: item.building.nameBuilding,
         createdAt: dayjs(item.createdAt).format("DD MMMM BBBB"),
       };
     }),
@@ -135,7 +136,6 @@ function ApprovePage({}: Props) {
                 <DataGrid
                   components={{ NoRowsOverlay }}
                   rows={rows}
-                  getRowId={(row: any) => row._id}
                   columns={columns}
                   pageSizeOptions={[5, 10]}
                   initialState={{

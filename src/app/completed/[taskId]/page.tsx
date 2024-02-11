@@ -23,8 +23,7 @@ type Props = {};
 const CompletedDetail = (props: Props) => {
   const router = useRouter();
   const { data: session, status } = useSession();
-  const firstName = session?.userData.firstName;
-  const lastName = session?.userData.lastName;
+  const idAdmin = session?.userData._id;
   const { taskId } = useParams();
   const [dataImage, setDataImage] = React.useState("");
   const [nameImage, setNameImage] = React.useState("");
@@ -92,7 +91,7 @@ const CompletedDetail = (props: Props) => {
       }
       const payload: ITaskConfirm = {
         id: taskId as string,
-        processBy: firstName + " " + lastName,
+        processBy: idAdmin!!,
         imageEnd: url,
       };
       const res = mutateAsyncSendTask(payload);
@@ -172,7 +171,9 @@ const CompletedDetail = (props: Props) => {
               </div>
               <div>
                 <span className=" font-semibold">ประเภทปัญหา : </span>
-                <span className="text-md text-gray-500">{data?.type}</span>
+                <span className="text-md text-gray-500">
+                  {data?.type.typeName}
+                </span>
               </div>
               <div className="flex flex-col gap-3 w-[300px]">
                 <span className=" font-semibold">รายละเอียดปัญหา : </span>
@@ -182,7 +183,25 @@ const CompletedDetail = (props: Props) => {
               </div>
               <div>
                 <span className=" font-semibold">สถานะ : </span>
-                <span className="text-md text-gray-500">{data?.status}</span>
+                <span
+                  className={`${
+                    data?.status === "pending"
+                      ? " text-xs bg-gray-300 px-1 rounded-md"
+                      : data?.status === "approve"
+                      ? "text-xs px-1 bg-[#dc8000] rounded-md"
+                      : data?.status === "reject"
+                      ? "text-xs px-1 bg-[#b91515] rounded-md"
+                      : "text-xs px-1 bg-[#00DC82] rounded-md"
+                  }`}
+                >
+                  {data?.status === "pending"
+                    ? "รอการยืนยัน"
+                    : data?.status === "approve"
+                    ? "รอดำเนินการให้สำเร็จ"
+                    : data?.status === "reject"
+                    ? "ปัญหาถูกปฏิเสธ"
+                    : "เเก้ปัญหาสำเร็จ"}
+                </span>
               </div>
               <div>
                 <span className=" font-semibold">วันที่เเจ้ง : </span>
@@ -192,7 +211,9 @@ const CompletedDetail = (props: Props) => {
               </div>
               <div>
                 <span className=" font-semibold">อาคาร : </span>
-                <span className="text-md text-gray-500">{data?.building}</span>
+                <span className="text-md text-gray-500">
+                  {data?.building.nameBuilding}
+                </span>
               </div>
               <div className="flex flex-col gap-3 w-[300px]">
                 <span className=" font-semibold">รายละเอียดสถานที่ : </span>
