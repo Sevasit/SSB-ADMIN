@@ -95,7 +95,7 @@ function Tasks({}: Props) {
       renderCell: (params) => {
         return (
           <Link
-            href={`/task/${params.row._id}`}
+            href={`/task/${params.row.id}`}
             className=" w-36 bg-white border-2 border-[#dc8000] text-[#dc8000] hover:bg-[#dc8000] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer py-1 rounded-lg flex gap-1 justify-between px-4 items-center"
           >
             <span>ดูรายละเอียด</span>

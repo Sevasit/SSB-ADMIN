@@ -310,7 +310,7 @@ const CreateEmp = (props: Props) => {
                     color="success"
                   >
                     {dataType.map((item, index) => (
-                      <MenuItem key={item._id} value={item.typeName}>
+                      <MenuItem key={item._id} value={item._id}>
                         {item.typeName}
                       </MenuItem>
                     ))}
