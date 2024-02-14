@@ -43,7 +43,7 @@ const RecentTask = (props: Props) => {
           <h1 className=" text-lg font-semibold">ประเภท : {role}</h1>
         )}
       </div>
-      {!isLoading ? (
+      {!isLoading && dataTaskCurrent.length !== 0 ? (
         <ul>
           {dataTaskCurrent.map((item, id) => (
             <li

@@ -13,6 +13,7 @@ const createType = "CREATE_TYPES";
 const editType = "EDIT_TYPES";
 
 //TASK KEY
+const getTaskHistory = "GET_TASK_HISTORY";
 const getTasksPending = "GET_TASKS_PENDING";
 const getTasksPendingById = "GET_TASKS_PENDINGBYID";
 const getTasksApproved = "GET_TASKS_APPROVED";
@@ -26,6 +27,7 @@ const getTaskByAdmin = "GET_TASK_BY_ADMIN";
 
 //add export key
 export {
+  getTaskHistory,
   getUsers,
   deleteUser,
   getTypes,

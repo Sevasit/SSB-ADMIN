@@ -16,6 +16,7 @@ import Link from "next/link";
 import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid";
 import NoRowsOverlay from "./NoRows";
 import TableLoading from "./TableLoading";
+import PrintCsvOnly from "./PrintCsvOnly";
 
 dayjs.extend(buddhistEra);
 dayjs.locale("th");
@@ -143,6 +144,17 @@ const Empolyee = (props: Props) => {
     },
   ];
 
+  const ExportCsv = () => {
+    return (
+      <>
+        <PrintCsvOnly
+          fileName={`employee_${dayjs().format("DD-MM-YYYY")}`}
+          fields={["id", "name", "email", "role", "createdAt", "updatedAt"]}
+        />
+      </>
+    );
+  };
+
   const rows: GridRowsProp = [
     ...dataUsers.map((item, index) => {
       return {
@@ -184,6 +196,9 @@ const Empolyee = (props: Props) => {
                     pagination: {
                       paginationModel: { page: 0, pageSize: 5 },
                     },
+                  }}
+                  slots={{
+                    toolbar: ExportCsv,
                   }}
                   disableColumnFilter
                   disableColumnMenu
