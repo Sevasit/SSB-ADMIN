@@ -1,5 +1,21 @@
 import { Dayjs } from "dayjs";
 
+export interface ITaskHistory {
+  _id: string;
+  userId: string;
+  name: string;
+  phone: string;
+  type: {
+    typeName: string;
+  };
+  building: {
+    nameBuilding: string;
+  };
+  status: string;
+  createdAt: Dayjs;
+  updatedAt: Dayjs;
+}
+
 export interface ITaskPending {
   _id: string;
   name: string;
@@ -32,7 +48,13 @@ export interface ITaskById {
 
 export interface ITaskReject {
   id: string;
+  processBy: string;
   annotation: string;
+}
+
+export interface ITaskApprove {
+  id: string;
+  processBy: string;
 }
 
 export interface ITaskConfirm {

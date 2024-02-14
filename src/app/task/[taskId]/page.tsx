@@ -12,6 +12,7 @@ import useGetTaskPendingById from "../../../../hooks/task/useGetTaskById";
 import useReject from "../../../../hooks/task/useReject";
 import { ITaskReject } from "../../../../types/ITask";
 import LoadingTaskById from "@/app/components/LoadingTaskById";
+import { useSession } from "next-auth/react";
 
 dayjs.extend(buddhistEra);
 dayjs.locale("th");
@@ -19,6 +20,8 @@ dayjs.locale("th");
 type Props = {};
 
 const page = (props: Props) => {
+  const { data: session, status } = useSession();
+  const idAdmin = session?.userData._id;
   const [open, setOpen] = React.useState(false);
   const [annotation, setAnnotation] = React.useState("");
   const { taskId } = useParams();
@@ -46,6 +49,7 @@ const page = (props: Props) => {
   const handleSubmit = async () => {
     const payload: ITaskReject = {
       id: taskId as string,
+      processBy: idAdmin!!,
       annotation: annotation,
     };
     if (annotation.trim().length === 0) {

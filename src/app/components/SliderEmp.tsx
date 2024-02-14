@@ -4,6 +4,7 @@ import Link from "next/link";
 import { RxDashboard } from "react-icons/rx";
 import { IoPaperPlaneOutline } from "react-icons/io5";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
+import { LuFileClock } from "react-icons/lu";
 
 const Slider = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -35,6 +36,15 @@ const Slider = ({ children }: { children: React.ReactNode }) => {
             <IoMdCheckmarkCircleOutline size={28} />
             <span className=" text-[10px] uppercase font-semibold">
               Completed
+            </span>
+          </Link>
+          <Link
+            href="/historyTask"
+            className="w-20 text-white border bg-[#00DC82] duration-200 ease-linear hover:bg-[#00DC82] hover:border hover:border-black hover:text-slate-800 p-2 rounded-lg flex flex-col justify-between items-center gap-2"
+          >
+            <LuFileClock size={28} />
+            <span className=" text-[10px] uppercase font-semibold">
+              History
             </span>
           </Link>
         </div>

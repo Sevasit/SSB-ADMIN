@@ -25,6 +25,7 @@ import { IType } from "../../../types/IType";
 import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid";
 import TableLoading from "./TableLoading";
 import NoRowsOverlay from "./NoRows";
+import PrintCsvOnly from "./PrintCsvOnly";
 
 dayjs.extend(buddhistEra);
 dayjs.locale("th");
@@ -309,6 +310,17 @@ const Types = (props: Props) => {
     },
   ];
 
+  const ExportCsv = () => {
+    return (
+      <>
+        <PrintCsvOnly
+          fileName={`types_${dayjs().format("DD-MM-YYYY")}`}
+          fields={["typeName", "typeCode", "createdAt", "updatedAt"]}
+        />
+      </>
+    );
+  };
+
   const rows: GridRowsProp = [
     ...dataTypes.map((item, index) => {
       return {
@@ -350,6 +362,9 @@ const Types = (props: Props) => {
                     pagination: {
                       paginationModel: { page: 0, pageSize: 5 },
                     },
+                  }}
+                  slots={{
+                    toolbar: ExportCsv,
                   }}
                   disableColumnFilter
                   disableColumnMenu

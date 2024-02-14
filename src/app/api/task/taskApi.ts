@@ -1,14 +1,31 @@
 import { IResponseDefault } from "../../../../types/IResponseDefult";
 import {
+  ITaskApprove,
   ITaskById,
   ITaskConfirm,
   ITaskCount,
   ITaskCountToGraph,
   ITaskCurrent,
+  ITaskHistory,
   ITaskPending,
   ITaskReject,
 } from "../../../../types/ITask";
 import AxiosCustom from "../../../../utils/AxiosApi";
+
+export const getFindAllTaskHistory = async () => {
+  try {
+    const response = await AxiosCustom.get<ITaskHistory[]>(
+      "/tasks/findAllTaskHistory"
+    );
+    if (response?.data === undefined) {
+      throw "error undefined";
+    }
+    return response?.data;
+  } catch (err) {
+    console.error(err);
+    throw Promise.reject(err);
+  }
+};
 
 export const getFindByIdApi = async (id: string) => {
   try {
@@ -129,10 +146,11 @@ export const rejectTaskApi = async (payload: ITaskReject) => {
   }
 };
 
-export const approveTaskApi = async (id: string) => {
+export const approveTaskApi = async (payload: ITaskApprove) => {
   try {
     const response = await AxiosCustom.patch<IResponseDefault>(
-      `/tasks/sendTaskApprove?id=${id}`
+      `/tasks/sendTaskApprove`,
+      payload
     );
     if (response?.data === undefined) {
       throw "error undefined";

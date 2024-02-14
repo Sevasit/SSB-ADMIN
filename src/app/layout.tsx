@@ -24,6 +24,7 @@ export default async function RootLayout({
 }) {
   const session = await getServerSession(authOptions);
   console.log("session layout", session?.userData);
+  console.log(session?.jwt)
   return (
     <NextAuthProvider>
       <html lang="en">

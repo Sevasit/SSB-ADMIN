@@ -1,48 +1,26 @@
 "use client";
-import Image from "next/image";
+import { Dialog, DialogActions, FormControl, TextField } from "@mui/material";
+import Link from "next/link";
 import React from "react";
 import toast, { Toaster } from "react-hot-toast";
-import { useParams, useRouter } from "next/navigation";
-import useGetTaskPendingById from "../../../../hooks/task/useGetTaskById";
+import Image from "next/image";
 import dayjs from "dayjs";
 import "dayjs/locale/th";
 import buddhistEra from "dayjs/plugin/buddhistEra";
-import Link from "next/link";
-import useApprove from "../../../../hooks/task/useApprove";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
+import { useParams, useRouter } from "next/navigation";
+import useGetTaskPendingById from "../../../../hooks/task/useGetTaskById";
+import useReject from "../../../../hooks/task/useReject";
+import { ITaskReject } from "../../../../types/ITask";
 import LoadingTaskById from "@/app/components/LoadingTaskById";
-import { ITaskApprove } from "../../../../types/ITask";
-import { useSession } from "next-auth/react";
 
 dayjs.extend(buddhistEra);
 dayjs.locale("th");
 
 type Props = {};
 
-const ApproveDetail = (props: Props) => {
-  const { data: session, status } = useSession();
-  const idAdmin = session?.userData._id;
-  const [open, setOpen] = React.useState(false);
+const page = (props: Props) => {
   const { taskId } = useParams();
   const { data, isLoading, isError } = useGetTaskPendingById(taskId as string);
-
-  const router = useRouter();
-
-  const {
-    mutateAsync: mutateAsyncApprove,
-    isLoading: approveIsLoading,
-    isError: approveIsError,
-  } = useApprove();
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
   function formatPhoneNumber(phoneNumber: string | undefined) {
     if (phoneNumber === undefined) return "";
     const formattedPhoneNumber = `${phoneNumber.slice(
@@ -52,35 +30,6 @@ const ApproveDetail = (props: Props) => {
     return formattedPhoneNumber;
   }
 
-  const handleSubmit = async () => {
-    const payload: ITaskApprove = {
-      id: taskId as string,
-      processBy: idAdmin!!,
-    };
-    const res = mutateAsyncApprove(payload);
-    res
-      .then((data) => {
-        if (data.message === "Approve task successfully") {
-          toast.success("อนุมัติปัญหาสำเร็จ");
-          router.push("/approve");
-        } else {
-          toast.error("อนุมัติปัญหาไม่สำเร็จ", {
-            style: {
-              border: "1px solid #713200",
-              padding: "16px",
-              color: "#dc8000",
-            },
-            iconTheme: {
-              primary: "#dc8000",
-              secondary: "#FFFAEE",
-            },
-          });
-        }
-      })
-      .catch((error) => {
-        toast.error("อนุมัติปัญหาไม่สำเร็จ");
-      });
-  };
   return (
     <>
       <div className="flex flex-col items-center mx-[5%] border shadow-md mt-5">
@@ -166,45 +115,18 @@ const ApproveDetail = (props: Props) => {
               </div>
             </div>
           )}
-          <div className="flex gap-10 items-start md:justify-end justify-center md:items-center mt-5">
-            <Link href="/approve">
-              <div className=" w-20 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center">
-                <span>ยกเลิก</span>
+
+          <div className="flex gap-10 items-start md:justify-center justify-center md:items-center mt-5">
+            <Link href="/historyTask">
+              <div className=" bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center">
+                <span>ย้อนกลับ</span>
               </div>
             </Link>
-            <div
-              className=" w-auto bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#00DC82] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center"
-              onClick={handleClickOpen}
-            >
-              <span>อนุมัติปัญหา</span>
-            </div>
           </div>
         </div>
-        <Dialog open={open} onClose={handleClose}>
-          <div className="p-6">
-            <div className=" m-3 text-xl">
-              {"คุณต้องการที่จะอนุมัติปัญหาหรือไม่?"}
-            </div>
-            <DialogActions className="flex justify-around items-center">
-              <div
-                onClick={handleClose}
-                className=" w-24 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center"
-              >
-                <span>ยกเลิก</span>
-              </div>
-              <div
-                onClick={handleSubmit}
-                className=" w-24 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#00DC82] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center"
-              >
-                <span>ยืนยัน</span>
-              </div>
-            </DialogActions>
-          </div>
-        </Dialog>
       </div>
-      <Toaster position="bottom-right" />
     </>
   );
 };
 
-export default ApproveDetail;
+export default page;
