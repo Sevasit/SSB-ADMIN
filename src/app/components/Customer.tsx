@@ -17,6 +17,7 @@ import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid";
 import NoRowsOverlay from "./NoRows";
 import TableLoading from "./TableLoading";
 import PrintCsvOnly from "./PrintCsvOnly";
+import Loader from "./Loader";
 
 dayjs.extend(buddhistEra);
 dayjs.locale("th");
@@ -33,6 +34,7 @@ const Empolyee = (props: Props) => {
   const router = useRouter();
   const [open, setOpen] = React.useState(false);
   const [id, setId] = React.useState("");
+  const [loader, setLoader] = React.useState(false);
 
   const handleClickOpen = (id: string) => {
     setId(id);
@@ -44,12 +46,15 @@ const Empolyee = (props: Props) => {
   };
 
   const handleSubmit = async () => {
+    setLoader(true);
     try {
       await mutateAsynccreate(id);
       toast.success("ลบข้อมูลผู้ใช้งานสำเร็จ");
+      setLoader(false);
       setOpen(false);
     } catch (error) {
       toast.error("ลบข้อมูลผู้ใช้งานไม่สำเร็จ");
+      setLoader(false);
     }
   };
 
@@ -217,19 +222,24 @@ const Empolyee = (props: Props) => {
           <div className=" m-3 text-xl">
             {"คุณต้องการที่จะลบข้อมูลผู้ใช้หรือไม่?"}
           </div>
-          <DialogActions>
-            <div
-              onClick={handleClose}
-              className=" w-24 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center"
-            >
-              <span>ยกเลิก</span>
-            </div>
-            <div
-              onClick={handleSubmit}
-              className=" w-24 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#00DC82] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center"
-            >
-              <span>ยืนยัน</span>
-            </div>
+          <DialogActions className="flex justify-around items-center">
+            {loader && <Loader />}
+            {!loader && (
+              <div
+                onClick={handleClose}
+                className=" w-24 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center"
+              >
+                <span>ยกเลิก</span>
+              </div>
+            )}
+            {!loader && (
+              <div
+                onClick={handleSubmit}
+                className=" w-24 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#00DC82] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center"
+              >
+                <span>ยืนยัน</span>
+              </div>
+            )}
           </DialogActions>
         </div>
       </Dialog>

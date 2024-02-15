@@ -16,6 +16,7 @@ import toast, { Toaster } from "react-hot-toast";
 import useGetByIdUsers from "../../../../hooks/users/useGetByIdUsers";
 import useEditUsers from "../../../../hooks/users/useEditUsers";
 import { useSession } from "next-auth/react";
+import Loader from "@/app/components/Loader";
 
 type FormData = {
   name: string;
@@ -31,6 +32,7 @@ type FormData = {
 const EditEmp = () => {
   const { data: session, status } = useSession();
   const roleUser = session?.userData.role;
+  const [loader, setLoader] = React.useState(false);
 
   const router = useRouter();
   const { employeeId } = useParams();
@@ -75,6 +77,7 @@ const EditEmp = () => {
   } = useEditUsers();
 
   const onSubmit = (data: FormData) => {
+    setLoader(true);
     const payload = {
       id: employeeId,
       firstName: data.name,
@@ -89,9 +92,11 @@ const EditEmp = () => {
     res
       .then((data) => {
         if (data.message === "Updated user successfully") {
+          setLoader(false);
           toast.success("อัพเดตข้อมูลผู้ใช้งานสำเร็จ");
           router.push("/employee");
         } else if (data.message === "Invalid password") {
+          setLoader(false);
           toast.error("รหัสผ่านเก่าผิดกรุณาลองใหม่", {
             style: {
               border: "1px solid #713200",
@@ -104,6 +109,7 @@ const EditEmp = () => {
             },
           });
         } else {
+          setLoader(false);
           toast.error("มีประเภทงานนี้ถูกใช้เเล้ว", {
             style: {
               border: "1px solid #713200",
@@ -118,6 +124,7 @@ const EditEmp = () => {
         }
       })
       .catch((error) => {
+        setLoader(false);
         toast.error("อัพเดตข้อมูลผู้ใช้งานไม่สำเร็จ");
       });
   };
@@ -371,7 +378,7 @@ const EditEmp = () => {
                     color="success"
                   >
                     {dataType.map((item, index) => (
-                      <MenuItem key={item._id} value={item.typeName}>
+                      <MenuItem key={item._id} value={item._id}>
                         {item.typeName}
                       </MenuItem>
                     ))}
@@ -383,17 +390,22 @@ const EditEmp = () => {
                   </p>
                 </FormControl>
                 <div className="flex w-[550px] gap-10 justify-end">
-                  <Link href="/employee">
-                    <div className=" w-20 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-between px-4 items-center">
-                      <span>ยกเลิก</span>
-                    </div>
-                  </Link>
-                  <button
-                    type="submit"
-                    className=" w-20 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#00DC82] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-between px-4 items-center"
-                  >
-                    <span>ยืนยัน</span>
-                  </button>
+                  {loader && <Loader />}
+                  {!loader && (
+                    <Link href="/employee">
+                      <div className=" w-20 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-between px-4 items-center">
+                        <span>ยกเลิก</span>
+                      </div>
+                    </Link>
+                  )}
+                  {!loader && (
+                    <button
+                      type="submit"
+                      className=" w-20 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#00DC82] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-between px-4 items-center"
+                    >
+                      <span>ยืนยัน</span>
+                    </button>
+                  )}
                 </div>
               </div>
             </div>

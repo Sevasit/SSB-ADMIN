@@ -15,6 +15,7 @@ import { useSession } from "next-auth/react";
 import { ITaskConfirm } from "../../../../types/ITask";
 import useSendTask from "../../../../hooks/task/useSendTask";
 import LoadingTaskById from "@/app/components/LoadingTaskById";
+import Loader from "@/app/components/Loader";
 
 dayjs.extend(buddhistEra);
 dayjs.locale("th");
@@ -28,6 +29,7 @@ const CompletedDetail = (props: Props) => {
   const { taskId } = useParams();
   const [dataImage, setDataImage] = React.useState("");
   const [nameImage, setNameImage] = React.useState("");
+  const [loader, setLoader] = React.useState(false);
 
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
@@ -63,7 +65,9 @@ const CompletedDetail = (props: Props) => {
   };
 
   const handleUpload = async () => {
+    setLoader(true);
     if (!dataImage) {
+      setLoader(false);
       toast.error("กรุณาเลือกรูปก่อนยืนยันการเเจ้งปัญหา", {
         style: {
           border: "1px solid #713200",
@@ -99,9 +103,11 @@ const CompletedDetail = (props: Props) => {
       res
         .then((res) => {
           if (res.message === "Updated task successfully") {
+            setLoader(false);
             toast.success("ยืนยันการเเจ้งปัญหาสำเร็จ");
             router.push("/completed");
           } else {
+            setLoader(false);
             toast.error("ยืนยันการเเจ้งปัญหาไม่สำเร็จ", {
               style: {
                 border: "1px solid #713200",
@@ -116,6 +122,7 @@ const CompletedDetail = (props: Props) => {
           }
         })
         .catch((err) => {
+          setLoader(false);
           toast.error("ยืนยันการเเจ้งปัญหาไม่สำเร็จ", {
             style: {
               border: "1px solid #713200",
@@ -129,6 +136,7 @@ const CompletedDetail = (props: Props) => {
           });
         });
     } catch (error) {
+      setLoader(false);
       toast.error("ยืนยันการเเจ้งปัญหาไม่สำเร็จ", {
         style: {
           border: "1px solid #713200",
@@ -266,18 +274,23 @@ const CompletedDetail = (props: Props) => {
               {nameImage && <div>{nameImage}</div>}
             </div>
             <DialogActions className="flex justify-around items-center mt-3">
-              <div
-                onClick={handleClose}
-                className=" w-24 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center"
-              >
-                <span>ยกเลิก</span>
-              </div>
-              <div
-                onClick={handleUpload}
-                className=" w-24 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#00DC82] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center"
-              >
-                <span>ยืนยัน</span>
-              </div>
+              {loader && <Loader />}
+              {!loader && (
+                <div
+                  onClick={handleClose}
+                  className=" w-24 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center"
+                >
+                  <span>ยกเลิก</span>
+                </div>
+              )}
+              {!loader && (
+                <div
+                  onClick={handleUpload}
+                  className=" w-24 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#00DC82] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center"
+                >
+                  <span>ยืนยัน</span>
+                </div>
+              )}
             </DialogActions>
           </div>
         </Dialog>

@@ -7,10 +7,8 @@ import { callback } from "chart.js/helpers";
 
 const handler = NextAuth({
   session: {
+    strategy: "jwt",
     maxAge: 24 * 60 * 60, // 1 hour for session
-  },
-  jwt:{
-    maxAge: 24 * 60 * 60, // 1 hour for jwt
   },
   secret: process.env.NEXTAUTH_SECRET,
   pages: {

@@ -12,5 +12,7 @@ export const config = {
     "/completed/:path*",
     "/task",
     "/task/:path*",
+    "/historyTask",
+    "/historyTask/:path*",
   ],
 };
