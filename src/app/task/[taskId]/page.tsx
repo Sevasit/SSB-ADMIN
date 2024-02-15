@@ -13,6 +13,7 @@ import useReject from "../../../../hooks/task/useReject";
 import { ITaskReject } from "../../../../types/ITask";
 import LoadingTaskById from "@/app/components/LoadingTaskById";
 import { useSession } from "next-auth/react";
+import Loader from "@/app/components/Loader";
 
 dayjs.extend(buddhistEra);
 dayjs.locale("th");
@@ -24,6 +25,7 @@ const page = (props: Props) => {
   const idAdmin = session?.userData._id;
   const [open, setOpen] = React.useState(false);
   const [annotation, setAnnotation] = React.useState("");
+  const [loader, setLoader] = React.useState(false);
   const { taskId } = useParams();
   const router = useRouter();
   const { data, isLoading, isError } = useGetTaskPendingById(taskId as string);
@@ -47,12 +49,14 @@ const page = (props: Props) => {
     setOpen(false);
   };
   const handleSubmit = async () => {
+    setLoader(true);
     const payload: ITaskReject = {
       id: taskId as string,
       processBy: idAdmin!!,
       annotation: annotation,
     };
     if (annotation.trim().length === 0) {
+      setLoader(false);
       toast.error("กรุณากรอกหมายเหตุก่อนยืนยัน", {
         style: {
           border: "1px solid #713200",
@@ -70,9 +74,11 @@ const page = (props: Props) => {
     res
       .then((data) => {
         if (data.message === "Reject task successfully") {
+          setLoader(false);
           toast.success("ปฏิเสธปัญหาสำเร็จ");
           router.push("/task");
         } else {
+          setLoader(false);
           toast.error("ปฏิเสธปัญหาไม่สำเร็จ", {
             style: {
               border: "1px solid #713200",
@@ -87,6 +93,7 @@ const page = (props: Props) => {
         }
       })
       .catch((error) => {
+        setLoader(false);
         toast.error("ปฏิเสธปัญหาไม่สำเร็จ");
       });
   };
@@ -213,18 +220,23 @@ const page = (props: Props) => {
               />
             </FormControl>
             <DialogActions className="flex justify-around items-center mt-3">
-              <div
-                onClick={handleClose}
-                className=" w-24 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center"
-              >
-                <span>ยกเลิก</span>
-              </div>
-              <div
-                onClick={handleSubmit}
-                className=" w-24 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#00DC82] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center"
-              >
-                <span>ยืนยัน</span>
-              </div>
+              {loader && <Loader />}
+              {!loader && (
+                <div
+                  onClick={handleClose}
+                  className=" w-24 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center"
+                >
+                  <span>ยกเลิก</span>
+                </div>
+              )}
+              {!loader && (
+                <div
+                  onClick={handleSubmit}
+                  className=" w-24 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#00DC82] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center"
+                >
+                  <span>ยืนยัน</span>
+                </div>
+              )}
             </DialogActions>
           </div>
         </Dialog>

@@ -16,6 +16,7 @@ import useGetType from "../../../../hooks/type/useGetType";
 import useCreateUsers from "../../../../hooks/users/useCreateUsers";
 import toast, { Toaster } from "react-hot-toast";
 import { signIn, useSession } from "next-auth/react";
+import Loader from "@/app/components/Loader";
 
 interface Props {}
 
@@ -33,6 +34,7 @@ const CreateEmp = (props: Props) => {
   const router = useRouter();
   const { data: session, status } = useSession();
   const user = session?.user;
+  const [loader, setLoader] = React.useState(false);
 
   const {
     register,
@@ -56,6 +58,7 @@ const CreateEmp = (props: Props) => {
   } = useCreateUsers();
 
   const onSubmit = (data: FormData) => {
+    setLoader(true);
     const payload = {
       firstName: data.name,
       lastName: data.lastname,
@@ -68,9 +71,11 @@ const CreateEmp = (props: Props) => {
     res
       .then((data) => {
         if (data.message === "Created user successfully") {
+          setLoader(false);
           toast.success("เพิ่มข้อมูลผู้ใช้งานสำเร็จ");
           router.push("/employee");
         } else if (data.message === "Role already exists") {
+          setLoader(false);
           toast.error("มีประเภทงานนี้ถูกใช้เเล้ว", {
             style: {
               border: "1px solid #713200",
@@ -83,6 +88,7 @@ const CreateEmp = (props: Props) => {
             },
           });
         } else {
+          setLoader(false);
           toast.error("อีเมล์นี้ถูกใช้เเล้ว", {
             style: {
               border: "1px solid #713200",
@@ -97,6 +103,7 @@ const CreateEmp = (props: Props) => {
         }
       })
       .catch((error) => {
+        setLoader(false);
         toast.error("เพิ่มข้อมูลผู้ใช้งานไม่สำเร็จ");
       });
   };
@@ -322,17 +329,22 @@ const CreateEmp = (props: Props) => {
                   </p>
                 </FormControl>
                 <div className="flex w-[550px] gap-10 justify-end">
-                  <Link href="/employee">
-                    <div className=" w-20 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center">
-                      <span>ยกเลิก</span>
-                    </div>
-                  </Link>
-                  <button
-                    type="submit"
-                    className=" w-20 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#00DC82] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center"
-                  >
-                    <span>ยืนยัน</span>
-                  </button>
+                  {loader && <Loader />}
+                  {!loader && (
+                    <Link href="/employee">
+                      <div className=" w-20 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center">
+                        <span>ยกเลิก</span>
+                      </div>
+                    </Link>
+                  )}
+                  {!loader && (
+                    <button
+                      type="submit"
+                      className=" w-20 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#00DC82] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center"
+                    >
+                      <span>ยืนยัน</span>
+                    </button>
+                  )}
                 </div>
               </div>
             </div>

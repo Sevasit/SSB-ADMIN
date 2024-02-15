@@ -26,6 +26,7 @@ import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid";
 import TableLoading from "./TableLoading";
 import NoRowsOverlay from "./NoRows";
 import PrintCsvOnly from "./PrintCsvOnly";
+import Loader from "./Loader";
 
 dayjs.extend(buddhistEra);
 dayjs.locale("th");
@@ -73,6 +74,7 @@ const Types = (props: Props) => {
   const [id, setId] = React.useState("");
   const [idEdit, setIdEdit] = React.useState("");
   const [findTypeById, setFindTypeById] = React.useState<IType>();
+  const [loader, setLoader] = React.useState(false);
 
   React.useEffect(() => {
     if (idEdit) {
@@ -105,6 +107,7 @@ const Types = (props: Props) => {
   } = useForm<FormData>();
 
   const onSubmit = (data: FormData) => {
+    setLoader(true);
     const payload = {
       typeName: data.typeName,
       typeCode: data.typeCode,
@@ -113,9 +116,11 @@ const Types = (props: Props) => {
     res
       .then((data) => {
         if (data.message === "Created type successfully") {
+          setLoader(false);
           toast.success("เพิ่มข้อมูลประเภทงานสำเร็จ");
           setOpenCreate(false);
         } else if (data.message === "Type already exists") {
+          setLoader(false);
           toast.error("มีประเภทงานนี้ถูกใช้เเล้ว", {
             style: {
               border: "1px solid #713200",
@@ -128,6 +133,7 @@ const Types = (props: Props) => {
             },
           });
         } else {
+          setLoader(false);
           toast.error("มี Code นี้ถูกใช้เเล้ว", {
             style: {
               border: "1px solid #713200",
@@ -142,11 +148,13 @@ const Types = (props: Props) => {
         }
       })
       .catch((error) => {
+        setLoader(false);
         toast.error("เพิ่มข้อมูลประเภทงานไม่สำเร็จ");
       });
   };
 
   const onSubmitEdit = (data: FormData) => {
+    setLoader(true);
     const payload = {
       id: idEdit,
       typeName: data.typeName,
@@ -156,9 +164,11 @@ const Types = (props: Props) => {
     res
       .then((data) => {
         if (data.message === "Updated type successfully") {
+          setLoader(false);
           toast.success("เเก้ไขข้อมูลประเภทงานสำเร็จ");
           setOpenEdit(false);
         } else if (data.message === "Type already exists") {
+          setLoader(false);
           toast.error("มีประเภทงานนี้ถูกใช้เเล้ว", {
             style: {
               border: "1px solid #713200",
@@ -171,6 +181,7 @@ const Types = (props: Props) => {
             },
           });
         } else {
+          setLoader(false);
           toast.error("มี Code นี้ถูกใช้เเล้ว", {
             style: {
               border: "1px solid #713200",
@@ -185,6 +196,7 @@ const Types = (props: Props) => {
         }
       })
       .catch((error) => {
+        setLoader(false);
         toast.error("เเก้ไขข้อมูลประเภทงานไม่สำเร็จ");
       });
   };
@@ -217,12 +229,15 @@ const Types = (props: Props) => {
   };
 
   const handleSubmitDelete = async () => {
+    setLoader(true);
     try {
       await mutateAsyncType(id);
       toast.success("ลบข้อมูลประเภทงานสำเร็จ");
       setOpen(false);
+      setLoader(false);
     } catch (error) {
       toast.error("ลบข้อมูลประเภทงานไม่สำเร็จ");
+      setLoader(false);
     }
   };
 
@@ -384,18 +399,23 @@ const Types = (props: Props) => {
             {"คุณต้องการที่จะลบข้อมูลประเภทงานหรือไม่?"}
           </div>
           <DialogActions className="flex justify-around items-center">
-            <div
-              onClick={handleClose}
-              className=" w-24 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center"
-            >
-              <span>ยกเลิก</span>
-            </div>
-            <div
-              onClick={handleSubmitDelete}
-              className=" w-24 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#00DC82] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center"
-            >
-              <span>ยืนยัน</span>
-            </div>
+            {loader && <Loader />}
+            {!loader && (
+              <div
+                onClick={handleClose}
+                className=" w-24 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center"
+              >
+                <span>ยกเลิก</span>
+              </div>
+            )}
+            {!loader && (
+              <div
+                onClick={handleSubmitDelete}
+                className=" w-24 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#00DC82] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center"
+              >
+                <span>ยืนยัน</span>
+              </div>
+            )}
           </DialogActions>
         </div>
       </Dialog>
@@ -451,20 +471,23 @@ const Types = (props: Props) => {
               </FormControl>
             </div>
             <DialogActions>
-              <div className="flex gap-10 items-start md:justify-end justify-center md:items-center">
-                <div
-                  onClick={handleCloseCreate}
-                  className=" w-20 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-between px-4 items-center"
-                >
-                  <span>ยกเลิก</span>
+              {loader && <Loader />}
+              {!loader && (
+                <div className="flex gap-10 items-start md:justify-end justify-center md:items-center">
+                  <div
+                    onClick={handleCloseCreate}
+                    className=" w-20 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-between px-4 items-center"
+                  >
+                    <span>ยกเลิก</span>
+                  </div>
+                  <button
+                    type="submit"
+                    className=" w-20 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#00DC82] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-between px-4 items-center"
+                  >
+                    <span>ยืนยัน</span>
+                  </button>
                 </div>
-                <button
-                  type="submit"
-                  className=" w-20 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#00DC82] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-between px-4 items-center"
-                >
-                  <span>ยืนยัน</span>
-                </button>
-              </div>
+              )}
             </DialogActions>
           </form>
         </DialogContent>
@@ -528,20 +551,23 @@ const Types = (props: Props) => {
               </FormControl>
             </div>
             <DialogActions>
-              <div className="flex gap-10 items-start md:justify-end justify-center md:items-center">
-                <div
-                  onClick={handleCloseEdit}
-                  className=" w-20 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-between px-4 items-center"
-                >
-                  <span>ยกเลิก</span>
+              {loader && <Loader />}
+              {!loader && (
+                <div className="flex gap-10 items-start md:justify-end justify-center md:items-center">
+                  <div
+                    onClick={handleCloseEdit}
+                    className=" w-20 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-between px-4 items-center"
+                  >
+                    <span>ยกเลิก</span>
+                  </div>
+                  <button
+                    type="submit"
+                    className=" w-20 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#00DC82] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-between px-4 items-center"
+                  >
+                    <span>ยืนยัน</span>
+                  </button>
                 </div>
-                <button
-                  type="submit"
-                  className=" w-20 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#00DC82] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-between px-4 items-center"
-                >
-                  <span>ยืนยัน</span>
-                </button>
-              </div>
+              )}
             </DialogActions>
           </form>
         </DialogContent>
