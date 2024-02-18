@@ -119,6 +119,7 @@ const Types = (props: Props) => {
           setLoader(false);
           toast.success("เพิ่มข้อมูลประเภทงานสำเร็จ");
           setOpenCreate(false);
+          reset();
         } else if (data.message === "Type already exists") {
           setLoader(false);
           toast.error("มีประเภทงานนี้ถูกใช้เเล้ว", {
@@ -167,6 +168,7 @@ const Types = (props: Props) => {
           setLoader(false);
           toast.success("เเก้ไขข้อมูลประเภทงานสำเร็จ");
           setOpenEdit(false);
+          reset();
         } else if (data.message === "Type already exists") {
           setLoader(false);
           toast.error("มีประเภทงานนี้ถูกใช้เเล้ว", {

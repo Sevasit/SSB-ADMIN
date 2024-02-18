@@ -51,6 +51,12 @@ const BarChart = () => {
             precision: 0,
           },
         },
+        x: {
+          ticks: {
+            autoSkip: false, // Prevents automatic skipping of labels
+            maxRotation: 0, // Set the maxRotation to 0 for horizontal labels
+          },
+        },
       },
       plugins: {
         title: {
@@ -60,6 +66,10 @@ const BarChart = () => {
             size: 25,
           },
           color: "black",
+        },
+        legend: {
+          display: true,
+          position: "top", // or 'bottom', 'left', 'right'
         },
         maintainAspectRatio: false,
         responsive: true,
