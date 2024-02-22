@@ -517,13 +517,16 @@ const Types = (props: Props) => {
                 </p>
               </FormControl>
               <FormControl size="small" sx={{ minHeight: 40 }}>
-                <IOSSwitch
-                  sx={{ m: 1 }}
-                  checked={checked}
-                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                    setChecked(event.target.checked);
-                  }}
-                />
+                <div className=" flex gap-2 items-center">
+                  <IOSSwitch
+                    sx={{ m: 1 }}
+                    checked={checked}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                      setChecked(event.target.checked);
+                    }}
+                  />
+                  <span>{checked ? "Active" : "Inactive"}</span>
+                </div>
               </FormControl>
             </div>
             <DialogActions>
@@ -606,13 +609,16 @@ const Types = (props: Props) => {
                 </p>
               </FormControl>
               <FormControl size="small" sx={{ minHeight: 40 }}>
-                <IOSSwitch
-                  sx={{ m: 1 }}
-                  checked={checked}
-                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                    setChecked(event.target.checked);
-                  }}
-                />
+                <div className=" flex gap-2 items-center">
+                  <IOSSwitch
+                    sx={{ m: 1 }}
+                    checked={checked}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                      setChecked(event.target.checked);
+                    }}
+                  />
+                  <span>{checked ? "Active" : "Inactive"}</span>
+                </div>
               </FormControl>
             </div>
             <DialogActions>

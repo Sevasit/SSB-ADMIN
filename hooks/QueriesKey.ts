@@ -12,6 +12,7 @@ const deleteType = "DELETE_TYPES";
 const createType = "CREATE_TYPES";
 const editType = "EDIT_TYPES";
 const getTypesByAdmin = "GET_TYPES_BY_ADMIN";
+const getTypesInclude = "GET_TYPES_INCLUDE";
 
 //TASK KEY
 const getTaskHistory = "GET_TASK_HISTORY";
@@ -50,4 +51,5 @@ export {
   getTaskByAdmin,
   rejectTask,
   getTypesByAdmin,
+  getTypesInclude,
 };

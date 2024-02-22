@@ -17,6 +17,7 @@ import useGetByIdUsers from "../../../../hooks/users/useGetByIdUsers";
 import useEditUsers from "../../../../hooks/users/useEditUsers";
 import { useSession } from "next-auth/react";
 import Loader from "@/app/components/Loader";
+import useGetTypeIncludeAdmin from "../../../../hooks/type/useGetTypeInclude";
 
 type FormData = {
   name: string;
@@ -68,7 +69,7 @@ const EditEmp = () => {
     data: dataType = [],
     isLoading: getisLoading,
     isError: getisErroris,
-  } = useGetType();
+  } = useGetTypeIncludeAdmin();
 
   const {
     mutateAsync: mutateAsyncEdit,
@@ -281,7 +282,8 @@ const EditEmp = () => {
                         required: true,
                         minLength: {
                           value: 12,
-                          message: "กรุณากรอกรหัสผ่านผู้ใช้ให้ถูกต้อง",
+                          message:
+                            "กรุณากรอกรหัสผ่านผู้ใช้ให้ถูกต้อง 12 ตัวอักษร",
                         },
                       })}
                       inputProps={{ maxLength: 12 }}
@@ -312,7 +314,8 @@ const EditEmp = () => {
                         required: true,
                         minLength: {
                           value: 12,
-                          message: "กรุณากรอกรหัสผ่านผู้ใช้ให้ถูกต้อง",
+                          message:
+                            "กรุณากรอกรหัสผ่านผู้ใช้ให้ถูกต้อง 12 ตัวอักษร",
                         },
                         validate: (value) => {
                           return (
@@ -348,10 +351,10 @@ const EditEmp = () => {
                     color="success"
                     {...register("oldPassword", {
                       required: true,
-                      minLength: {
-                        value: 12,
-                        message: "กรุณากรอกรหัสผ่านผู้ใช้ให้ถูกต้อง",
-                      },
+                      // minLength: {
+                      //   value: 12,
+                      //   message: "กรุณากรอกรหัสผ่านผู้ใช้ให้ถูกต้อง 12 ตัวอักษรห",
+                      // },
                     })}
                     inputProps={{ maxLength: 12 }}
                   />
