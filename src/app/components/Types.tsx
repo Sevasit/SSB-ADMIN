@@ -1,23 +1,24 @@
 "use client";
 import React from "react";
 import { MdOutlineAddBox } from "react-icons/md";
-import { RiDeleteBin6Line } from "react-icons/ri";
 import { BiEdit } from "react-icons/bi";
 import {
   Dialog,
   DialogActions,
   DialogContent,
   FormControl,
+  FormControlLabel,
+  Switch,
+  SwitchProps,
   TextField,
 } from "@mui/material";
 import dayjs from "dayjs";
 import toast, { Toaster } from "react-hot-toast";
 import "dayjs/locale/th";
 import buddhistEra from "dayjs/plugin/buddhistEra";
-import useGetType from "../../../hooks/type/useGetType";
 import { RxCube } from "react-icons/rx";
 import useDeleteTypes from "../../../hooks/type/useDeleteType";
-import { useForm } from "react-hook-form";
+import { Controller, set, useForm } from "react-hook-form";
 import useCreateType from "../../../hooks/type/useCreateType";
 import useEditType from "../../../hooks/type/useEditType";
 import useGetTypeById from "../../../hooks/type/useGetTypeById";
@@ -27,6 +28,8 @@ import TableLoading from "./TableLoading";
 import NoRowsOverlay from "./NoRows";
 import PrintCsvOnly from "./PrintCsvOnly";
 import Loader from "./Loader";
+import { styled } from "@mui/material/styles";
+import useGetTypesByAdmin from "../../../hooks/type/useGetTypeByAdmin";
 
 dayjs.extend(buddhistEra);
 dayjs.locale("th");
@@ -39,16 +42,10 @@ type FormData = {
 
 const Types = (props: Props) => {
   const {
-    mutateAsync: mutateAsyncType,
-    isLoading: typeisLoading,
-    isError: typeIsError,
-  } = useDeleteTypes();
-
-  const {
     data: dataTypes = [],
     isLoading: getISLoading,
     isError: getISError,
-  } = useGetType();
+  } = useGetTypesByAdmin();
 
   const {
     mutateAsync: mutateAsyncTypeCreate,
@@ -75,6 +72,7 @@ const Types = (props: Props) => {
   const [idEdit, setIdEdit] = React.useState("");
   const [findTypeById, setFindTypeById] = React.useState<IType>();
   const [loader, setLoader] = React.useState(false);
+  const [checked, setChecked] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     if (idEdit) {
@@ -85,6 +83,7 @@ const Types = (props: Props) => {
             typeName: data?.typeName,
             typeCode: data?.typeCode,
           });
+          setChecked(data.status);
         })
         .catch((error) => {
           console.log(error);
@@ -94,6 +93,7 @@ const Types = (props: Props) => {
 
   const {
     register,
+    control,
     handleSubmit,
     reset,
     formState: { errors },
@@ -101,6 +101,7 @@ const Types = (props: Props) => {
 
   const {
     register: registerEdit,
+    control: controlEdit,
     handleSubmit: handleSubmitEdit,
     reset: resetEdit,
     formState: { errors: errorsEdit },
@@ -111,6 +112,7 @@ const Types = (props: Props) => {
     const payload = {
       typeName: data.typeName,
       typeCode: data.typeCode,
+      status: checked,
     };
     const res = mutateAsyncTypeCreate(payload);
     res
@@ -160,7 +162,9 @@ const Types = (props: Props) => {
       id: idEdit,
       typeName: data.typeName,
       typeCode: data.typeCode,
+      status: checked,
     };
+    console.log(payload);
     const res = mutateAsyncTypeEdit(payload);
     res
       .then((data) => {
@@ -222,6 +226,7 @@ const Types = (props: Props) => {
   };
 
   const handleCloseCreate = () => {
+    setChecked(false);
     reset();
     setOpenCreate(false);
   };
@@ -230,18 +235,61 @@ const Types = (props: Props) => {
     setOpenEdit(false);
   };
 
-  const handleSubmitDelete = async () => {
-    setLoader(true);
-    try {
-      await mutateAsyncType(id);
-      toast.success("ลบข้อมูลประเภทงานสำเร็จ");
-      setOpen(false);
-      setLoader(false);
-    } catch (error) {
-      toast.error("ลบข้อมูลประเภทงานไม่สำเร็จ");
-      setLoader(false);
-    }
-  };
+  const IOSSwitch = styled((props: SwitchProps) => (
+    <Switch
+      focusVisibleClassName=".Mui-focusVisible"
+      disableRipple
+      {...props}
+    />
+  ))(({ theme }) => ({
+    width: 42,
+    height: 26,
+    padding: 0,
+    "& .MuiSwitch-switchBase": {
+      padding: 0,
+      margin: 2,
+      transitionDuration: "300ms",
+      "&.Mui-checked": {
+        transform: "translateX(16px)",
+        color: "#fff",
+        "& + .MuiSwitch-track": {
+          backgroundColor:
+            theme.palette.mode === "dark" ? "#2ECA45" : "#65C466",
+          opacity: 1,
+          border: 0,
+        },
+        "&.Mui-disabled + .MuiSwitch-track": {
+          opacity: 0.5,
+        },
+      },
+      "&.Mui-focusVisible .MuiSwitch-thumb": {
+        color: "#33cf4d",
+        border: "6px solid #fff",
+      },
+      "&.Mui-disabled .MuiSwitch-thumb": {
+        color:
+          theme.palette.mode === "light"
+            ? theme.palette.grey[100]
+            : theme.palette.grey[600],
+      },
+      "&.Mui-disabled + .MuiSwitch-track": {
+        opacity: theme.palette.mode === "light" ? 0.7 : 0.3,
+      },
+    },
+    "& .MuiSwitch-thumb": {
+      boxSizing: "border-box",
+      width: 22,
+      height: 22,
+    },
+    "& .MuiSwitch-track": {
+      borderRadius: 26 / 2,
+      backgroundColor: theme.palette.mode === "light" ? "#E9E9EA" : "#39393D",
+      opacity: 1,
+      transition: theme.transitions.create(["background-color"], {
+        duration: 500,
+      }),
+    },
+  }));
 
   const columns: GridColDef[] = [
     {
@@ -270,7 +318,29 @@ const Types = (props: Props) => {
       headerClassName: "text-[#0f8d67]",
       width: 200,
     },
-
+    {
+      field: "status",
+      headerAlign: "center",
+      align: "center",
+      headerName: "สถานะ",
+      headerClassName: "text-[#0f8d67]",
+      width: 200,
+      renderCell: (params) => {
+        return (
+          <>
+            <span
+              className={` ${
+                params.row.status === "ไม่ใช้งาน"
+                  ? " text-xs bg-gray-300 py-2 px-4 rounded-md"
+                  : "text-xs py-2 px-4 bg-[#00DC82] rounded-md"
+              }`}
+            >
+              {params.row.status}
+            </span>
+          </>
+        );
+      },
+    },
     {
       field: "createdAt",
       headerAlign: "center",
@@ -306,25 +376,25 @@ const Types = (props: Props) => {
       },
       sortable: false,
     },
-    {
-      field: "ลบ",
-      width: 150,
-      headerAlign: "center",
-      headerClassName: "text-[#0f8d67]",
-      align: "center",
-      renderCell: (params) => {
-        return (
-          <div
-            onClick={() => handleClickOpen(params.row.id)}
-            className=" w-24 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer py-1 rounded-lg flex gap-1 justify-between px-4 items-center"
-          >
-            <span>ลบ</span>
-            <RiDeleteBin6Line className=" text-lg" />
-          </div>
-        );
-      },
-      sortable: false,
-    },
+    // {
+    //   field: "ลบ",
+    //   width: 150,
+    //   headerAlign: "center",
+    //   headerClassName: "text-[#0f8d67]",
+    //   align: "center",
+    //   renderCell: (params) => {
+    //     return (
+    //       <div
+    //         onClick={() => handleClickOpen(params.row.id)}
+    //         className=" w-24 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer py-1 rounded-lg flex gap-1 justify-between px-4 items-center"
+    //       >
+    //         <span>ลบ</span>
+    //         <RiDeleteBin6Line className=" text-lg" />
+    //       </div>
+    //     );
+    //   },
+    //   sortable: false,
+    // },
   ];
 
   const ExportCsv = () => {
@@ -332,7 +402,7 @@ const Types = (props: Props) => {
       <>
         <PrintCsvOnly
           fileName={`types_${dayjs().format("DD-MM-YYYY")}`}
-          fields={["typeName", "typeCode", "createdAt", "updatedAt"]}
+          fields={["typeName", "typeCode", "status", "createdAt", "updatedAt"]}
         />
       </>
     );
@@ -344,6 +414,7 @@ const Types = (props: Props) => {
         id: item._id,
         typeName: item.typeName,
         typeCode: item.typeCode,
+        status: item.status === true ? "ใช้งาน" : "ไม่ใช้งาน",
         createdAt: dayjs(item.createdAt).format("DD MMMM BBBB"),
         updatedAt: dayjs(item.updatedAt).format("DD MMMM BBBB"),
       };
@@ -395,32 +466,6 @@ const Types = (props: Props) => {
           </div>
         </div>
       </div>
-      <Dialog open={open} onClose={handleClose}>
-        <div className="p-6">
-          <div className=" m-3 text-xl">
-            {"คุณต้องการที่จะลบข้อมูลประเภทงานหรือไม่?"}
-          </div>
-          <DialogActions className="flex justify-around items-center">
-            {loader && <Loader />}
-            {!loader && (
-              <div
-                onClick={handleClose}
-                className=" w-24 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center"
-              >
-                <span>ยกเลิก</span>
-              </div>
-            )}
-            {!loader && (
-              <div
-                onClick={handleSubmitDelete}
-                className=" w-24 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#00DC82] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center"
-              >
-                <span>ยืนยัน</span>
-              </div>
-            )}
-          </DialogActions>
-        </div>
-      </Dialog>
       <Dialog open={openCreate} onClose={handleCloseCreate}>
         <DialogContent style={{ minWidth: 500 }}>
           <span>สร้างประเภทงาน</span>
@@ -470,6 +515,15 @@ const Types = (props: Props) => {
                     errors.typeCode.type === "pattern" &&
                     errors.typeCode.message}
                 </p>
+              </FormControl>
+              <FormControl size="small" sx={{ minHeight: 40 }}>
+                <IOSSwitch
+                  sx={{ m: 1 }}
+                  checked={checked}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    setChecked(event.target.checked);
+                  }}
+                />
               </FormControl>
             </div>
             <DialogActions>
@@ -551,6 +605,15 @@ const Types = (props: Props) => {
                     errorsEdit.typeCode.message}
                 </p>
               </FormControl>
+              <FormControl size="small" sx={{ minHeight: 40 }}>
+                <IOSSwitch
+                  sx={{ m: 1 }}
+                  checked={checked}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    setChecked(event.target.checked);
+                  }}
+                />
+              </FormControl>
             </div>
             <DialogActions>
               {loader && <Loader />}
@@ -580,3 +643,51 @@ const Types = (props: Props) => {
 };
 
 export default Types;
+
+{
+  /* <Dialog open={open} onClose={handleClose}>
+        <div className="p-6">
+          <div className=" m-3 text-xl">
+            {"คุณต้องการที่จะลบข้อมูลประเภทงานหรือไม่?"}
+          </div>
+          <DialogActions className="flex justify-around items-center">
+            {loader && <Loader />}
+            {!loader && (
+              <div
+                onClick={handleClose}
+                className=" w-24 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center"
+              >
+                <span>ยกเลิก</span>
+              </div>
+            )}
+            {!loader && (
+              <div
+                onClick={handleSubmitDelete}
+                className=" w-24 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#00DC82] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center"
+              >
+                <span>ยืนยัน</span>
+              </div>
+            )}
+          </DialogActions>
+        </div>
+      </Dialog> */
+}
+
+// const handleSubmitDelete = async () => {
+//   setLoader(true);
+//   try {
+//     await mutateAsyncType(id);
+//     toast.success("ลบข้อมูลประเภทงานสำเร็จ");
+//     setOpen(false);
+//     setLoader(false);
+//   } catch (error) {
+//     toast.error("ลบข้อมูลประเภทงานไม่สำเร็จ");
+//     setLoader(false);
+//   }
+// };
+
+// const {
+//   mutateAsync: mutateAsyncType,
+//   isLoading: typeisLoading,
+//   isError: typeIsError,
+// } = useDeleteTypes();

@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { IResponseDefault } from "../../types/IResponseDefult";
-import { createType, getTypes } from "../QueriesKey";
+import { createType, getTypesByAdmin } from "../QueriesKey";
 import { createTypesApi } from "@/app/api/type/typeApi";
 
 export default function useCreateType() {
@@ -9,7 +9,7 @@ export default function useCreateType() {
     [createType],
     (payload) => createTypesApi(payload),
     {
-      onSuccess: () => queryClient.invalidateQueries([getTypes]),
+      onSuccess: () => queryClient.invalidateQueries([getTypesByAdmin]),
     }
   );
 }
