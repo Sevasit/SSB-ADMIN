@@ -11,6 +11,7 @@ const getTypesById = "GET_TYPEBYID";
 const deleteType = "DELETE_TYPES";
 const createType = "CREATE_TYPES";
 const editType = "EDIT_TYPES";
+const getTypesByAdmin = "GET_TYPES_BY_ADMIN";
 
 //TASK KEY
 const getTaskHistory = "GET_TASK_HISTORY";
@@ -48,4 +49,5 @@ export {
   getTasksCountToGraph,
   getTaskByAdmin,
   rejectTask,
+  getTypesByAdmin,
 };

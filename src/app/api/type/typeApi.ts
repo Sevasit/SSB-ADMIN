@@ -15,6 +15,19 @@ export const getfindTypesApi = async () => {
   }
 };
 
+export const getFindTypesByAdminApi = async () => {
+  try {
+    const response = await AxiosCustom.get<IType[]>("/type/findAllTypeByAdmin");
+    if (response?.data === undefined) {
+      throw "error undefined";
+    }
+    return response?.data;
+  } catch (err) {
+    console.error(err);
+    throw Promise.reject(err);
+  }
+};
+
 export const getfindTypesByIdApi = async (id: string) => {
   try {
     const response = await AxiosCustom.get<IType>(
