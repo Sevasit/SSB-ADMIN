@@ -136,13 +136,17 @@ const Empolyee = (props: Props) => {
       align: "center",
       renderCell: (params) => {
         return (
-          <div
-            onClick={() => handleClickOpen(params.row.id)}
-            className=" w-24 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer py-1 rounded-lg flex gap-1 justify-between px-4 items-center"
-          >
-            <span>ลบ</span>
-            <RiDeleteBin6Line className=" text-lg" />
-          </div>
+          <>
+            {params.row.role === "admin" ? null : (
+              <div
+                onClick={() => handleClickOpen(params.row.id)}
+                className=" w-24 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer py-1 rounded-lg flex gap-1 justify-between px-4 items-center"
+              >
+                <span>ลบ</span>
+                <RiDeleteBin6Line className=" text-lg" />
+              </div>
+            )}
+          </>
         );
       },
       sortable: false,
