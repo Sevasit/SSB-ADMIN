@@ -405,7 +405,7 @@ const EditEmp = () => {
                       "กรุณาเลือกประเภทงานผู้ใช้"}
                   </p>
                 </FormControl>
-                <div className="flex w-[550px] gap-10 justify-end">
+                <div className="flex w-[550px] gap-10 justify-center">
                   {loader && <Loader />}
                   {!loader && (
                     <Link href="/employee">
