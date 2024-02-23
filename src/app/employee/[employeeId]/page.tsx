@@ -109,6 +109,19 @@ const EditEmp = () => {
               secondary: "#FFFAEE",
             },
           });
+        } else if (data.message === "Email already exists") {
+          setLoader(false);
+          toast.error("อีเมล์นี้ถูกใช้เเล้ว", {
+            style: {
+              border: "1px solid #713200",
+              padding: "16px",
+              color: "#dc8000",
+            },
+            iconTheme: {
+              primary: "#dc8000",
+              secondary: "#FFFAEE",
+            },
+          });
         } else {
           setLoader(false);
           toast.error("มีประเภทงานนี้ถูกใช้เเล้ว", {
