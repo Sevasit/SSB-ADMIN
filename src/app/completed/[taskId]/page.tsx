@@ -273,24 +273,26 @@ const CompletedDetail = (props: Props) => {
               </div>
               {nameImage && <div>{nameImage}</div>}
             </div>
-            <DialogActions className="flex justify-around items-center mt-3">
-              {loader && <Loader />}
-              {!loader && (
-                <div
-                  onClick={handleClose}
-                  className=" w-24 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center"
-                >
-                  <span>ยกเลิก</span>
-                </div>
-              )}
-              {!loader && (
-                <div
-                  onClick={handleUpload}
-                  className=" w-24 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#00DC82] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center"
-                >
-                  <span>ยืนยัน</span>
-                </div>
-              )}
+            <DialogActions>
+              <div className="flex justify-around items-center mt-3">
+                {loader && <Loader />}
+                {!loader && (
+                  <div
+                    onClick={handleClose}
+                    className=" w-24 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center"
+                  >
+                    <span>ยกเลิก</span>
+                  </div>
+                )}
+                {!loader && (
+                  <div
+                    onClick={handleUpload}
+                    className=" w-24 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#00DC82] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center"
+                  >
+                    <span>ยืนยัน</span>
+                  </div>
+                )}
+              </div>
             </DialogActions>
           </div>
         </Dialog>
