@@ -236,7 +236,7 @@ const CompletedDetail = (props: Props) => {
               </div>
             </div>
           )}
-          <div className="flex gap-10 items-start md:justify-end justify-center md:items-center mt-5">
+          <div className="flex gap-10 items-start md:justify-center justify-center md:items-center mt-5">
             <Link href="/completed">
               <div className=" w-20 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center">
                 <span>ยกเลิก</span>
