@@ -6,9 +6,9 @@ type Props = {};
 
 function Page({}: Props) {
   const { data: session, status } = useSession();
-  console.log(session);
-  const user = session?.user;
-  const email = user?.email;
+  // console.log(session);
+  // const user = session?.user;
+  // const email = user?.email;
   // console.log("user", user);
   // console.log("session client", session);
 

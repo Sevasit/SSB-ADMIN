@@ -164,7 +164,7 @@ const Types = (props: Props) => {
       typeCode: data.typeCode,
       status: checked,
     };
-    console.log(payload);
+    // console.log(payload);
     const res = mutateAsyncTypeEdit(payload);
     res
       .then((data) => {
