@@ -11,7 +11,6 @@ import Link from "next/link";
 import React from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import useGetType from "../../../../hooks/type/useGetType";
 import toast, { Toaster } from "react-hot-toast";
 import useGetByIdUsers from "../../../../hooks/users/useGetByIdUsers";
 import useEditUsers from "../../../../hooks/users/useEditUsers";
@@ -364,10 +363,11 @@ const EditEmp = () => {
                     color="success"
                     {...register("oldPassword", {
                       required: true,
-                      // minLength: {
-                      //   value: 12,
-                      //   message: "กรุณากรอกรหัสผ่านผู้ใช้ให้ถูกต้อง 12 ตัวอักษรห",
-                      // },
+                      minLength: {
+                        value: 12,
+                        message:
+                          "กรุณากรอกรหัสผ่านผู้ใช้ให้ถูกต้อง 12 ตัวอักษร",
+                      },
                     })}
                     inputProps={{ maxLength: 12 }}
                   />

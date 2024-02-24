@@ -53,8 +53,8 @@ const BarChart = () => {
         },
         x: {
           ticks: {
-            autoSkip: false, // Prevents automatic skipping of labels
-            maxRotation: 0, // Set the maxRotation to 0 for horizontal labels
+            autoSkip: false,
+            maxRotation: 0,
           },
         },
       },
@@ -69,7 +69,7 @@ const BarChart = () => {
         },
         legend: {
           display: true,
-          position: "top", // or 'bottom', 'left', 'right'
+          position: "top",
         },
         maintainAspectRatio: false,
         responsive: true,
