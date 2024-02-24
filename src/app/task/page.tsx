@@ -19,7 +19,6 @@ dayjs.locale("th");
 type Props = {};
 
 function Tasks({}: Props) {
-  const { data: session, status } = useSession();
   const {
     data: dataTaskPending = [],
     isLoading,

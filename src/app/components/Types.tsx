@@ -7,7 +7,6 @@ import {
   DialogActions,
   DialogContent,
   FormControl,
-  FormControlLabel,
   Switch,
   SwitchProps,
   TextField,
@@ -17,8 +16,7 @@ import toast, { Toaster } from "react-hot-toast";
 import "dayjs/locale/th";
 import buddhistEra from "dayjs/plugin/buddhistEra";
 import { RxCube } from "react-icons/rx";
-import useDeleteTypes from "../../../hooks/type/useDeleteType";
-import { Controller, set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import useCreateType from "../../../hooks/type/useCreateType";
 import useEditType from "../../../hooks/type/useEditType";
 import useGetTypeById from "../../../hooks/type/useGetTypeById";
@@ -376,25 +374,6 @@ const Types = (props: Props) => {
       },
       sortable: false,
     },
-    // {
-    //   field: "ลบ",
-    //   width: 150,
-    //   headerAlign: "center",
-    //   headerClassName: "text-[#0f8d67]",
-    //   align: "center",
-    //   renderCell: (params) => {
-    //     return (
-    //       <div
-    //         onClick={() => handleClickOpen(params.row.id)}
-    //         className=" w-24 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer py-1 rounded-lg flex gap-1 justify-between px-4 items-center"
-    //       >
-    //         <span>ลบ</span>
-    //         <RiDeleteBin6Line className=" text-lg" />
-    //       </div>
-    //     );
-    //   },
-    //   sortable: false,
-    // },
   ];
 
   const ExportCsv = () => {
@@ -649,51 +628,3 @@ const Types = (props: Props) => {
 };
 
 export default Types;
-
-{
-  /* <Dialog open={open} onClose={handleClose}>
-        <div className="p-6">
-          <div className=" m-3 text-xl">
-            {"คุณต้องการที่จะลบข้อมูลประเภทงานหรือไม่?"}
-          </div>
-          <DialogActions className="flex justify-around items-center">
-            {loader && <Loader />}
-            {!loader && (
-              <div
-                onClick={handleClose}
-                className=" w-24 bg-white border-2 border-[#b91515] text-[#b91515] hover:bg-[#b91515] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center"
-              >
-                <span>ยกเลิก</span>
-              </div>
-            )}
-            {!loader && (
-              <div
-                onClick={handleSubmitDelete}
-                className=" w-24 bg-white border-2 border-[#0f8d67] text-[#0f8d67] hover:bg-[#00DC82] hover:border-black hover:text-white duration-300 shadow-md cursor-pointer rounded-lg flex gap-1 justify-center px-4 items-center"
-              >
-                <span>ยืนยัน</span>
-              </div>
-            )}
-          </DialogActions>
-        </div>
-      </Dialog> */
-}
-
-// const handleSubmitDelete = async () => {
-//   setLoader(true);
-//   try {
-//     await mutateAsyncType(id);
-//     toast.success("ลบข้อมูลประเภทงานสำเร็จ");
-//     setOpen(false);
-//     setLoader(false);
-//   } catch (error) {
-//     toast.error("ลบข้อมูลประเภทงานไม่สำเร็จ");
-//     setLoader(false);
-//   }
-// };
-
-// const {
-//   mutateAsync: mutateAsyncType,
-//   isLoading: typeisLoading,
-//   isError: typeIsError,
-// } = useDeleteTypes();

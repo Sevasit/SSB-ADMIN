@@ -21,7 +21,6 @@ dayjs.locale("th");
 type Props = {};
 
 function HistoryTask({}: Props) {
-  const { data: session, status } = useSession();
   const {
     data: dataTaskHistory = [],
     isLoading,

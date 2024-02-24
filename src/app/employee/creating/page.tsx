@@ -6,16 +6,14 @@ import {
   MenuItem,
   Select,
   TextField,
-  TextareaAutosize,
 } from "@mui/material";
 import Link from "next/link";
 import React from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import useGetType from "../../../../hooks/type/useGetType";
 import useCreateUsers from "../../../../hooks/users/useCreateUsers";
 import toast, { Toaster } from "react-hot-toast";
-import { signIn, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Loader from "@/app/components/Loader";
 import useGetTypeIncludeAdmin from "../../../../hooks/type/useGetTypeInclude";
 
